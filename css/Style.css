@@ -1,0 +1,57 @@
+/* ---------- HEADER ----------------------*/
+
+
+header{
+    background-color: blue;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+div.linkPanier {
+    text-align: right;
+}
+
+div.recherche{
+    text-align: center;
+}
+
+/* ------------- NAV ------------------- */
+
+nav {
+
+    background-color: pink;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+nav ul {
+    padding:0;
+    margin:0;
+    list-style-type:none;
+    }
+nav li {
+    margin-left:10px;
+    float:left; 
+    }
+
+/* ------------ MAIN ---------------------- */
+
+
+main{
+    background-color: red;
+    height: 2000px;
+}
+
+
+/* ------------ FOOTER ---------------------- */
+
+footer{
+    background-color: green;
+    bottom: 0;
+    height: 40px;
+
+}
