@@ -3,10 +3,39 @@
 
 header{
     background-color: blue;
-    display: flex;
-    align-items: center;
     position: sticky;
     top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+div.logo {
+    width: 6%;
+    margin-right: 20%;
+}
+
+#imgLogo {
+    width: 100%;
+}
+
+div.Login {
+    width: 6%;
+    margin-left: auto;
+}
+
+#imgLogin {
+    width: 100%;
+}
+
+div.linkPanier {
+    text-align: right;
+    width: 6%;
+    margin-left: 1%;
+}
+
+#imgPanier {
     width: 100%;
 }
 

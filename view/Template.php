@@ -13,28 +13,27 @@
 <body>      
 
     <header>
-
         <div class="logo">
-            <img src="./img/logo.png"width="10%">
+            <img id="imgLogo" src="./img/logo.png" width=10%>
         </div>
 
         <div class="recherche">
             //si possible barre de recherche
         </div>
 
-        <div class="logoLogin">
+        <div class="Login">
             <a href="Login.php">
-                <img src="./img/login.png" width="10%">
+                <img id="imgLogin"  src="./img/login.png" width=10%>
             </a>
         </div>
 
         <div class="linkPanier">
             <a href="Panier.html">
-                <img src="./img/panier.jpg" width="10%">
+                <img id="imgPanier" src="./img/panier.jpg" >
             </a>    
         </div>
-
     </header>
+
 
     <main>
 
