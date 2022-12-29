@@ -22,13 +22,13 @@
         </div>
 
         <div class="Login">
-            <a href="Login.php">
+            <a href="Login.html">
                 <img id="imgLogin"  src="./img/login.png" width=10%>
             </a>
         </div>
 
         <div class="linkPanier">
-            <a href="Panier.html">
+            <a href="Panier.php">
                 <img id="imgPanier" src="./img/panier.jpg" >
             </a>    
         </div>

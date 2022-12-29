@@ -1,8 +1,7 @@
-<?php $title = "Accueil"; ?>
+<?php $title = "Login"; ?>
 
 <?php ob_start(); ?>
 
-<p> accueil </p>
 
 <?php $content = ob_get_clean(); ?>
 
