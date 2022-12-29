@@ -1,7 +1,11 @@
 <?php
 
-require __DIR__ . '/model/ConnexionDB.php';
+/** regarder:
+ *  https://www.youtube.com/watch?v=dVyecM
+ */
 
-require __DIR__ . '/view/Accueil.php';
+require __DIR__ . '/controller/Router.php';
 
+$routeur = new Router();
+$routeur->handleRequest('accueil');
 ?>

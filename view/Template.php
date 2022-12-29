@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -9,7 +10,6 @@
     <title><?= $title ?></title>
 
 </head>
-
 <body>      
 
     <header>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="Login">
-            <a href="Login.html">
+            <a href="./view/Login.php">
                 <img id="imgLogin"  src="./img/login.png" width=10%>
             </a>
         </div>
