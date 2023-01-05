@@ -4,8 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="./css/Style.css">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/phpsite/Projetphp/assets/css/Style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
 
@@ -14,7 +13,10 @@
 
     <header>
         <div class="logo">
-            <img id="imgLogo" src="./img/logo.png" width=10%>
+        <form action="/phpsite/Projetphp/controller/Router.php" method="post">
+                <input type="hidden" name="action" value="accueil">
+                <input id="imgLogo" type="image" src="/phpsite/Projetphp/assets/img/logo.png" width=10% onclick="submit()">
+            </form>
         </div>
 
         <div class="recherche">
@@ -22,14 +24,16 @@
         </div>
 
         <div class="Login">
-            <a href="./view/Login.php">
-                <img id="imgLogin"  src="./img/login.png" width=10%>
-            </a>
+            <form action="/phpsite/Projetphp/controller/Router.php" method="post">
+                <input type="hidden" name="action" value="login">
+                <input id="imgLogin" type="image" src="/phpsite/Projetphp/assets/img/login.png" width=10% onclick="submit()">
+            </form>
+            
         </div>
 
         <div class="linkPanier">
             <a href="Panier.php">
-                <img id="imgPanier" src="./img/panier.jpg" >
+                <img id="imgPanier" src="/phpsite/Projetphp/assets/img/panier.jpg" >
             </a>    
         </div>
     </header>

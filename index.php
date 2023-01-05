@@ -6,6 +6,4 @@
 
 require __DIR__ . '/controller/Router.php';
 
-$routeur = new Router();
-$routeur->handleRequest('accueil');
 ?>

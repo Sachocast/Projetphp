@@ -18,20 +18,25 @@ class Router
         $this->loginController = new LoginController();
     }
 
-    public function handleRequest(String $val){
-        if($val == 'accueil')
+    public function handleRequest(){
+        if(!isset($_POST['action']) || $_POST['action'] == 'accueil')
         {
             $this->accueilController->displayAccueil();
             return;
-        }  
-        else if($val == 'login')
+        }
+        if($_POST['action'] == 'login')
         {
             $this->loginController->displayLogin();
             return;
-        }
+        }    
+
     }
 
 
 }
+
+$router = new Router();
+$router->handleRequest();
+
 
 ?>
