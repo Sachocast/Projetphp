@@ -31,14 +31,30 @@ class Router
         }
         if($_POST['page'] == 'login')
         {
-            $this->loginController->displayLogin();
+            $this->loginController->displayLogin(0);
             return;
         }    
         if($_POST['page'] == 'ajoutClient')
         {
-            $this->GestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville'],$_POST['admin']);
-            $this->accueilController->displayAccueil();
-            return;
+            try {
+                // Requête SQL ici
+                $this->GestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville']);
+                $this->accueilController->displayAccueil();
+                return;
+              } catch (PDOException $e) {
+                if ($e->getMessage()=="SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '".$_POST['email']."' for key 'PRIMARY'") {
+                    // Erreur de duplication de clé primaire
+                    $this->loginController->displayLogin(1);
+                }
+                else if ($e->getMessage()=="SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '".$_POST['numTel']."' for key 'numTel'") {
+                    // Erreur de duplication du numéro
+                    $this->loginController->displayLogin(2);
+                }
+                else{
+                 echo $e->getMessage();
+                }
+            }
+              return;
 
         }
 
