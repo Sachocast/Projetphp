@@ -26,13 +26,7 @@ $products = array(
 	)
 );
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title><?php echo $pageTitle; ?></title>
-</head>
-<body>
-	<header>
+
 		<h1>Bienvenue sur notre site de vente d'albums de musique</h1>
 		<nav>
 			<ul>
@@ -42,8 +36,6 @@ $products = array(
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</nav>
-	</header>
-	<main>
 		<h2>Nos derniers albums</h2>
 		<div class="products">
 			<?php foreach($products as $product): ?>
@@ -57,9 +49,3 @@ $products = array(
 			</div>
 			<?php endforeach; ?>
 		</div>
-	</main>
-	<footer>
-		<p>Copyright 2023 - Tous droits réservés</p>
-	</footer>
-</body>
-</html>
