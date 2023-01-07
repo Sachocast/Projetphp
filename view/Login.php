@@ -5,9 +5,10 @@
     <form action="/phpsite/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Nom utilisateur</label>
-            <input type="text" name="nomUtil"required="required">
+            <input type="text" required name="nomUtil">
         </fieldset>
         <fieldset>
+            <label><?= $login[0] ?></label>
             <label>Email</label>
             <input type="email" name="email" required="required"/>
         </fieldset>
@@ -16,6 +17,7 @@
             <input type="password" name="mdp" required="required"/>
         </fieldset>
         <fieldset>
+            <label><?= $login[1] ?></label>
             <label>Numero telephone</label>
             <input type="text" name="numTel" required="required">
         </fieldset>
@@ -29,7 +31,7 @@
         </fieldset>
         <fieldset>
             <input type="hidden" name="page" value="ajoutClient">
-            <input type="button" value="Valider" onclick="submit()">
+            <input type="submit" value="Valider" onclick="submit()">
         </fieldset>
     </form>
 </div>
