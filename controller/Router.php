@@ -24,18 +24,27 @@ class Router
     }
 
     public function handleRequest(){
-        if(!isset($_POST['action']) || $_POST['action'] == 'accueil')
+        if(!isset($_POST['page']) || $_POST['page'] == 'accueil')
         {
             $this->accueilController->displayAccueil();
             return;
         }
-        if($_POST['action'] == 'login')
+        if($_POST['page'] == 'login')
         {
             $this->loginController->displayLogin();
             return;
         }    
+        if($_POST['page'] == 'ajoutClient')
+        {
+            $this->GestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville'],$_POST['admin']);
+            $this->accueilController->displayAccueil();
+            return;
+
+        }
 
     }
+
+
 
 
 }

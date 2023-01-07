@@ -2,10 +2,10 @@
 
 <div id="formCreation">
     <h2>Créé compte<h2>
-    <form action="" methode="post">
+    <form action="/phpsite/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Nom utilisateur</label>
-            <input type="text" name="nomUtil">
+            <input type="text" name="nomUtil"required="required">
         </fieldset>
         <fieldset>
             <label>Email</label>
@@ -13,15 +13,11 @@
         </fieldset>
         <fieldset>
             <label>Mot de passe</label>
-            <input type="password" name="password" required="required"/>
-        </fieldset>
-        <fieldset>
-            <label>Confirmer mot de passe</label>
-            <input type="password" name="password" required="required"/>
+            <input type="password" name="mdp" required="required"/>
         </fieldset>
         <fieldset>
             <label>Numero telephone</label>
-            <input type="text" name="numTek" required="required">
+            <input type="text" name="numTel" required="required">
         </fieldset>
         <fieldset>
             <label>Pays</label>
@@ -31,13 +27,16 @@
             <label>Ville</label>
             <input type="text" name="ville" required="required">
         </fieldset>
-        <button type="submit">Valider</button>
+        <fieldset>
+            <input type="hidden" name="page" value="ajoutClient">
+            <input type="button" value="Valider" onclick="submit()">
+        </fieldset>
     </form>
 </div>
 
 <div id="formConnexion">
     <h2>Connexion<h2>
-    <form action="" methode="post">
+    <form action="" method="post">
         <fieldset>
             <label>Nom utilisateur</label>
             <input type="text" name="nomUtil">
