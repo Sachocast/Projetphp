@@ -14,7 +14,7 @@
     <header>
         <div class="logo">
         <form action="/phpsite/Projetphp/controller/Router.php" method="post">
-                <input type="hidden" name="action" value="accueil">
+                <input type="hidden" name="page" value="accueil">
                 <input id="imgLogo" type="image" src="/phpsite/Projetphp/assets/img/logo.png" width=10% onclick="submit()">
             </form>
         </div>
@@ -25,7 +25,7 @@
 
         <div class="Login">
             <form action="/phpsite/Projetphp/controller/Router.php" method="post">
-                <input type="hidden" name="action" value="login">
+                <input type="hidden" name="page" value="login">
                 <input id="imgLogin" type="image" src="/phpsite/Projetphp/assets/img/login.png" width=10% onclick="submit()">
             </form>
             
