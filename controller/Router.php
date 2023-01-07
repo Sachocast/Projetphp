@@ -1,8 +1,10 @@
 <?php
 
 require_once __DIR__ . '/../model/ConnexionDB.php';
+require_once __DIR__ . '/../model/GestionClient.php';
 require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
+require_once __DIR__ . '/../view/Vue.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Router
@@ -10,12 +12,15 @@ class Router
     private $db;
     private $accueilController;
     private $loginController;
+    private $GestionClient;
 
     public function __construct()
     {
-        $this->db = new ConnexionDB();
+        $connect =  new ConnexionDB();
+        $this->db = $connect->getDB();
         $this->accueilController = new AccueilController();
         $this->loginController = new LoginController();
+        $this->GestionClient = new GestionClient($this->db);
     }
 
     public function handleRequest(){
