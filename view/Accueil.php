@@ -26,7 +26,6 @@ $products = array(
 	)
 );
 ?>
-
 		<h1>Bienvenue sur notre site de vente d'albums de musique</h1>
 		<nav>
 			<ul>
