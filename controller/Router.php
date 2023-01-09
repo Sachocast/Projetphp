@@ -57,6 +57,31 @@ class Router
               return;
 
         }
+        if($_POST['page'] == 'connexion')
+        {
+            try {
+                // Requête SQL ici
+                if($this->GestionClient->verifEmail($_POST['email'],$_POST['mdp']) != 0)
+                {
+                    $this->loginController->displayLogin($this->GestionClient->verifEmail($_POST['email'],$_POST['mdp']));
+                }
+                else 
+                {
+                    $this->GestionClient->connection($_POST['email'],$_POST['mdp']);
+                    $this->accueilController->displayAccueil();
+                }
+                return;
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+              return;
+        }
+        if($_POST['page'] == 'logout')
+        {
+            $this->GestionClient->deconnection();
+            $this->accueilController->displayAccueil();
+
+        }
 
     }
 

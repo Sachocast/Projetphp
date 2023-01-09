@@ -29,6 +29,15 @@ div.Login {
     width: 100%;
 }
 
+div.Logout {
+    width: 6%;
+    margin-left: auto;
+}
+
+#imgLogout {
+    width: 100%;
+}
+
 div.linkPanier {
     text-align: right;
     width: 6%;

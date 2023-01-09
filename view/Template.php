@@ -1,3 +1,8 @@
+<?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -30,6 +35,16 @@
             </form>
             
         </div>
+        <?php
+            if (isset($_SESSION['email'])) { ?>
+                <div class="Logout">
+                    <form action="/phpsite/Projetphp/controller/Router.php" method="post">
+                        <input type="hidden" name="page" value="logout">
+                        <input id="imgLogout" type="image" src="/phpsite/Projetphp/assets/img/logout.png" width=10% onclick="submit()">
+                    </form>
+                </div> <?php
+            }
+        ?>
 
         <div class="linkPanier">
             <a href="Panier.php">
