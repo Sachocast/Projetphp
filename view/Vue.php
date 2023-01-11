@@ -10,7 +10,7 @@ class Vue
         $this->file = __DIR__ . "/{$action}.php";
     }
 
-    private function generateVue(string $file, array $data): string
+    private function generateVue(string $file, array $data)
     {
         if (file_exists($file))
         {
@@ -28,7 +28,7 @@ class Vue
         $content = $this->generateVue($this->file, $data);
 
         $template = $this->generateVue(
-            __DIR__ . '/template.php',
+            __DIR__ . '/Template.php',
             ['title' => $this->title, 'content' => $content]
         );
 

@@ -8,7 +8,7 @@ class LoginController
     {
         if($verifErreur <3 ){$array = $this->verifErreurCreationCompte($verifErreur);}
         else{$array = $this->verifErreurLogin($verifErreur);}
-        $vue = new Vue('login');
+        $vue = new Vue('Login');
         $vue -> display(['login' => $array]);
     }
 

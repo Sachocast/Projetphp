@@ -1,5 +1,7 @@
 <?php
-
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
 class GestionClient
 {
 
@@ -17,6 +19,8 @@ class GestionClient
         $stmt = $this->db->prepare($query);
 
         $stmt->execute();
+
+        $this->connection($email,$mdp);
     }
 
     public function verifEmail($email,$mdp)
@@ -62,23 +66,14 @@ class GestionClient
         $client = $this->select($email,$mdp);
 
         foreach($client as $row) {
-            setcookie('email',$row['email'],time()+(86400*30));
-            setcookie('nomUtil',$row['nomUtilisateur'],time()+(86400*30));
-            setcookie('mdp',$row['mdp'],time()+(86400*30));
-            setcookie('pays',$row['pays'],time()+(86400*30));
-            setcookie('ville',$row['ville'],time()+(86400*30));
-            setcookie('admin',$row['admin'],time()+(86400*30));
-            setcookie('numTel',$row['numTel'],time()+(86400*30));
-          }
-
-          $_SESSION['email']=$_COOKIE['email'];
-          $_SESSION['nomUtil']=$_COOKIE['nomUtil'];
-          $_SESSION['mdp']=$_COOKIE['mdp'];
-          $_SESSION['pays']=$_COOKIE['pays'];
-          $_SESSION['ville']=$_COOKIE['ville'];
-          $_SESSION['admin']=$_COOKIE['admin'];
-          $_SESSION['numTel']=$_COOKIE['numTel'];
-        
+            $_SESSION['email']=$row['email'];
+            $_SESSION['nomUtil']=$row['nomUtilisateur'];
+            $_SESSION['mdp']=$row['mdp'];
+            $_SESSION['pays']=$row['pays'];
+            $_SESSION['ville']=$row['ville'];
+            $_SESSION['admin']=$row['admin'];
+            $_SESSION['numTel']=$row['numTel'];
+          }        
     }
 
     public function deconnection()

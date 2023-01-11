@@ -2,7 +2,7 @@
 
 <div id="formCreation">
     <h2>Créé compte<h2>
-    <form action="/phpsite/Projetphp/controller/Router.php" method="post">
+    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Nom utilisateur</label>
             <input type="text" required="required" name="nomUtil">
@@ -38,7 +38,7 @@
 
 <div id="formConnexion">
     <h2>Connexion<h2>
-    <form action="/phpsite/Projetphp/controller/Router.php" method="post">
+    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Email</label>
             <label><?= $login[2] ?></label>
