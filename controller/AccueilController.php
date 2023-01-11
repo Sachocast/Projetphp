@@ -7,8 +7,8 @@ class AccueilController
     public function displayAccueil()
     {
         $array = [];
-        $vue = new Vue('accueil');
-        $vue -> display($array);
+        $vue = new Vue('Accueil');
+        $vue->display($array);
     }
 }
 

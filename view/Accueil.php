@@ -8,21 +8,21 @@ $products = array(
 		"description" => "Informations sur l'album",
 		"price" => 15,
         "artist" => "Par Ghost Killer Track",
-		"image" => "../assets/img/que_de_l_amour.jpg"
+		"image" => "https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/Que_de_l_amour.jpg"
 	),
 	array(
 		"name" => "Coeur Blanc",
 		"description" => "Informations sur l'album",
         "price" => 20,
         "artist" => "Par Jul",
-        "image" => "../assets/img/Coeur_blanc.jpg"
+        "image" => "https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/Coeur_blanc.jpg"
 	),
 	array(
 		"name" => "Into The Dark",
 		"description" => "Informations sur l'album",
         "price" => 18,
         "artist" => "Par Menace Santana",
-		"image" => "../assets/img/Into_the_dark.jpg"
+		"image" => "https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/Into_the_dark.jpg"
 	)
 );
 ?>
