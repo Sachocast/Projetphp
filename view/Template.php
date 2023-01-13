@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -14,9 +12,9 @@
 
     <header>
         <div class="logo">
-        <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+            <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
                 <input type="hidden" name="page" value="accueil">
-                <input id="imgLogo" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/logo.png" width=10% onclick="submit()">
+                <input id="imgLogo" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/site/logo.png" width=10% onclick="submit()" alt="logo">
             </form>
         </div>
 
@@ -27,25 +25,36 @@
         <div class="Login">
             <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
                 <input type="hidden" name="page" value="login">
-                <input id="imgLogin" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/login.png" width=10% onclick="submit()">
+                <input id="imgLogin" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/site/login.png" width=10% onclick="submit()" alt="login">
             </form>
             
         </div>
+        <?php
+            if (isset($_SESSION['email']) && $_SESSION['admin']== true) { ?>
+                <div class="admin">
+                    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+                        <input type="hidden" name="page" value="admin">
+                        <input id="imgAdmin" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/site/admin.png" width=10% onclick="submit()" alt="admin">
+                    </form>
+                </div> <?php
+            }
+        ?>
         <?php
             if (isset($_SESSION['email'])) { ?>
                 <div class="Logout">
                     <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
                         <input type="hidden" name="page" value="logout">
-                        <input id="imgLogout" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/logout.png" width=10% onclick="submit()">
+                        <input id="imgLogout" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/site/logout.png" width=10% onclick="submit()" alt="logout">
                     </form>
                 </div> <?php
             }
         ?>
 
         <div class="linkPanier">
-            <a href="Panier.php">
-                <img id="imgPanier" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/panier.jpg" >
-            </a>    
+        <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+                <input type="hidden" name="page" value="panier">
+                <input id="imgPanier" type="image" src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/site/panier.jpg" width=10% onclick="submit()" alt="panier">
+            </form> 
         </div>
     </header>
 
