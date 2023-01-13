@@ -4,7 +4,8 @@ require_once __DIR__ . '/../model/ConnexionDB.php';
 require_once __DIR__ . '/../model/GestionClient.php';
 require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
-require_once __DIR__ . '/../view/Vue.php';
+require_once __DIR__ . '/PanierController.php';
+require_once __DIR__ . '/AdminController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Router
@@ -12,6 +13,8 @@ class Router
     private $db;
     private $accueilController;
     private $loginController;
+    private $panierController;
+    private $adminController;
     private $GestionClient;
 
     public function __construct()
@@ -20,6 +23,8 @@ class Router
         $this->db = $connect->getDB();
         $this->accueilController = new AccueilController();
         $this->loginController = new LoginController();
+        $this->panierController = new PanierController();
+        $this->adminController = new AdminController();
         $this->GestionClient = new GestionClient($this->db);
     }
 
@@ -33,7 +38,17 @@ class Router
         {
             $this->loginController->displayLogin(0);
             return;
+        } 
+        if($_POST['page'] == 'panier')
+        {
+            $this->panierController->displayPanier();
+            return;
         }    
+        if($_POST['page'] == 'admin')
+        {
+            $this->adminController->displayAdmin();
+            return;
+        }      
         if($_POST['page'] == 'ajoutClient')
         {
             try {
