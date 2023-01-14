@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../model/ConnexionDB.php';
 require_once __DIR__ . '/../model/GestionClient.php';
 require_once __DIR__ . '/../model/GestionProduit.php';
+require_once __DIR__ . '/../model/GestionStock.php';
 require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
 require_once __DIR__ . '/PanierController.php';
@@ -18,6 +19,7 @@ class Routeur
     private $adminController;
     private $gestionClient;
     private $gestionProduit;
+    private $gestionStock;
 
     public function __construct()
     {
@@ -29,6 +31,7 @@ class Routeur
         $this->adminController = new AdminController();
         $this->gestionClient = new GestionClient($this->db);
         $this->gestionProduit = new GestionProduit($this->db);
+        $this->gestionStock = new GestionStock($this->db);
     }
 
     public function handleRequest(){
@@ -49,7 +52,7 @@ class Routeur
         }    
         if($_POST['page'] == 'admin')
         {
-            $this->adminController->displayAdmin();
+            $this->adminController->displayAdmin(0);
             return;
         }      
         if($_POST['page'] == 'ajoutClient')
@@ -103,9 +106,17 @@ class Routeur
         if($_POST['page'] == 'ajoutProduit')
         {
             try {
-                $this->gestionProduit->insert($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],$_POST['prixPublic'],$_POST['prixAchat'],
-                $_POST['cover'],$_POST['descriptif'],$_POST['artiste']);
-                $this->adminController->displayAdmin();
+                if($this->gestionProduit->insert($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],$_POST['prixPublic'],$_POST['prixAchat'],
+                $_POST['cover'],$_POST['descriptif'],$_POST['artiste'],$_POST['nomF'],$_POST['emailF']))
+                {
+                    $produit = $this->gestionProduit->recherche($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],$_POST['cover'],$_POST['artiste']);
+                    $idProduit ="";
+                    foreach($produit as $row){$idProduit= $row['idProduit'];}
+                    $this->gestionStock->insert($idProduit,$_POST['qteStock'],$_POST['nomF'],$_POST['emailF']);
+                    $this->adminController->displayAdmin(0);
+
+                }
+                else $this->adminController->displayAdmin(1);
                 return;
             }catch(PDOException $e) {
                 echo $e->getMessage();
