@@ -2,20 +2,22 @@
 
 require_once __DIR__ . '/../model/ConnexionDB.php';
 require_once __DIR__ . '/../model/GestionClient.php';
+require_once __DIR__ . '/../model/GestionProduit.php';
 require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
 require_once __DIR__ . '/PanierController.php';
 require_once __DIR__ . '/AdminController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
-class Router
+class Routeur
 {
     private $db;
     private $accueilController;
     private $loginController;
     private $panierController;
     private $adminController;
-    private $GestionClient;
+    private $gestionClient;
+    private $gestionProduit;
 
     public function __construct()
     {
@@ -25,7 +27,8 @@ class Router
         $this->loginController = new LoginController();
         $this->panierController = new PanierController();
         $this->adminController = new AdminController();
-        $this->GestionClient = new GestionClient($this->db);
+        $this->gestionClient = new GestionClient($this->db);
+        $this->gestionProduit = new GestionProduit($this->db);
     }
 
     public function handleRequest(){
@@ -53,7 +56,7 @@ class Router
         {
             try {
                 // Requête SQL ici
-                $this->GestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville']);
+                $this->gestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville']);
                 $this->accueilController->displayAccueil();
                 return;
               } catch (PDOException $e) {
@@ -76,13 +79,13 @@ class Router
         {
             try {
                 // Requête SQL ici
-                if($this->GestionClient->verifEmail($_POST['email'],$_POST['mdp']) != 0)
+                if($this->gestionClient->verifEmail($_POST['email'],$_POST['mdp']) != 0)
                 {
-                    $this->loginController->displayLogin($this->GestionClient->verifEmail($_POST['email'],$_POST['mdp']));
+                    $this->loginController->displayLogin($this->gestionClient->verifEmail($_POST['email'],$_POST['mdp']));
                 }
                 else 
                 {
-                    $this->GestionClient->connection($_POST['email'],$_POST['mdp']);
+                    $this->gestionClient->connection($_POST['email'],$_POST['mdp']);
                     $this->accueilController->displayAccueil();
                 }
                 return;
@@ -93,9 +96,20 @@ class Router
         }
         if($_POST['page'] == 'logout')
         {
-            $this->GestionClient->deconnection();
+            $this->gestionClient->deconnection();
             $this->accueilController->displayAccueil();
 
+        }
+        if($_POST['page'] == 'ajoutProduit')
+        {
+            try {
+                $this->gestionProduit->insert($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],$_POST['prixPublic'],$_POST['prixAchat'],
+                $_POST['cover'],$_POST['descriptif'],$_POST['artiste']);
+                $this->adminController->displayAdmin();
+                return;
+            }catch(PDOException $e) {
+                echo $e->getMessage();
+            }
         }
 
     }
@@ -105,7 +119,7 @@ class Router
 
 }
 
-$router = new Router();
+$router = new Routeur();
 $router->handleRequest();
 
 

@@ -34,15 +34,15 @@
         </fieldset>
         <fieldset>
             <label>Artiste</label>
-            <input type="text" name="Artiste"/>
+            <input type="text" name="artiste"/>
         </fieldset>
         <fieldset>
             <label>Genre</label>
-            <input type="text" name="Genre"/>
+            <input type="text" name="genre"/>
         </fieldset>
         <fieldset>
             <label>Année de sortie</label>
-            <input type="text" name="AnneeSortie"/>
+            <input type="text" name="anneeSortie"/>
         </fieldset>
         <fieldset>
             <label>Descriptif</label>
@@ -50,7 +50,7 @@
         </fieldset>
         <fieldset>
             <label>Cover</label>
-            <input type="text" name="Cover"/>
+            <input type="text" name="cover"/>
         </fieldset>
         <fieldset>
             <label>Prix achat</label>
