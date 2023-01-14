@@ -10,24 +10,24 @@
         <fieldset>
             <label><?= $login[0] ?></label>
             <label>Email</label>
-            <input type="email" name="email" required/>
+            <input type="email" name="email" required="required"/>
         </fieldset>
         <fieldset>
             <label>Mot de passe</label>
-            <input type="password" name="mdp" required/>
+            <input type="password" name="mdp" required="required"/>
         </fieldset>
         <fieldset>
             <label><?= $login[1] ?></label>
             <label>Numero telephone</label>
-            <input type="text" name="numTel" required>
+            <input type="text" name="numTel" required="required">
         </fieldset>
         <fieldset>
             <label>Pays</label>
-            <input type="text" name="pays" required>
+            <input type="text" name="pays" required="required">
         </fieldset>
         <fieldset>
             <label>Ville</label>
-            <input type="text" name="ville" required>
+            <input type="text" name="ville" required="required">
         </fieldset>
         <fieldset>
             <input type="hidden" name="page" value="ajoutClient">

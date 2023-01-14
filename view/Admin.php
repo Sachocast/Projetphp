@@ -27,38 +27,51 @@
 
     <div id="ajoutProduit">
     <h2>Ajouter un Produit</h2>
+    <label><strong><?= $admin[0] ?></strong></label>
     <form action="" method="post">
         <fieldset>
             <label>Titre</label>
-            <input type="text" name="titreAlbum"/>
+            <input type="text" name="titreAlbum" required="required"/>
         </fieldset>
         <fieldset>
             <label>Artiste</label>
-            <input type="text" name="artiste"/>
+            <input type="text" name="artiste" required="required"/>
         </fieldset>
         <fieldset>
             <label>Genre</label>
-            <input type="text" name="genre"/>
+            <input type="text" name="genre" required="required"/>
         </fieldset>
         <fieldset>
             <label>Année de sortie</label>
-            <input type="text" name="anneeSortie"/>
+            <input type="text" name="anneeSortie"required="required"/>
         </fieldset>
         <fieldset>
             <label>Descriptif</label>
-            <input type="text" name="descriptif"/>
+            <input type="text" name="descriptif" required="required"/>
         </fieldset>
         <fieldset>
             <label>Cover</label>
-            <input type="text" name="cover"/>
+            <input type="text" name="cover" required="required"/>
         </fieldset>
         <fieldset>
             <label>Prix achat</label>
-            <input type="text" name="prixAchat"/>
+            <input type="text" name="prixAchat" required="required"/>
         </fieldset>
         <fieldset>
             <label>Prix public</label>
-            <input type="text" name="prixPublic"/>
+            <input type="text" name="prixPublic" required="required"/>
+        </fieldset>
+        <fieldset>
+            <label>Fournisseur</label>
+            <input type="text" name="nomF" required="required"/>
+        </fieldset>
+        <fieldset>
+            <label>Email fournisseur</label>
+            <input type="text" name="emailF" required="required"/>
+        </fieldset>
+        <fieldset>
+            <label>Stock</label>
+            <input type="text" name="qteStock" required="required"/>
         </fieldset>
         <fieldset>
             <input type="hidden" name="page" value="ajoutProduit">
