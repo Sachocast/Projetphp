@@ -52,6 +52,19 @@ class GestionStock
         $fournisseur = $this->gestionFournisseur->recherche($nomF,$emailF);
         foreach($fournisseur as $row) {return $row['idFournisseur'];}
     }
+
+    public function supprimer($idProduit): bool
+    {
+        if(!$this->verifExistePas($idProduit))
+        {
+            $query = "DELETE FROM gestion_stock WHERE idProduit = '$idProduit'";
+            $stmt = $this->db->prepare($query);
+    
+            $stmt->execute();
+            return true;
+        }
+        return false;
+    }
 }
 
 ?>

@@ -8,6 +8,7 @@ require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
 require_once __DIR__ . '/PanierController.php';
 require_once __DIR__ . '/AdminController.php';
+require_once __DIR__ . '/APController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Routeur
@@ -17,6 +18,7 @@ class Routeur
     private $loginController;
     private $panierController;
     private $adminController;
+    private $apController;
     private $gestionClient;
     private $gestionProduit;
     private $gestionStock;
@@ -29,9 +31,10 @@ class Routeur
         $this->loginController = new LoginController();
         $this->panierController = new PanierController();
         $this->adminController = new AdminController();
+        $this->apController = new APController();
         $this->gestionClient = new GestionClient($this->db);
-        $this->gestionProduit = new GestionProduit($this->db);
         $this->gestionStock = new GestionStock($this->db);
+        $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
     }
 
     public function handleRequest(){
@@ -118,6 +121,33 @@ class Routeur
                 }
                 else $this->adminController->displayAdmin(1);
                 return;
+            }catch(PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+        if($_POST['page'] == 'rechercheProduit')
+        {
+            try {
+                
+                $result = $this->gestionProduit->recherche($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],"",$_POST['artiste']);
+                if(empty($result)) {
+                    $this->adminController->displayAdmin(2);  
+                } 
+                else { 
+                    $this->apController->displayAP($result);
+                    return;
+                }
+            }catch(PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+        if($_POST['page'] == 'supprimerProduit')
+        {
+            try {
+                if($this->gestionProduit->supprimer($_POST['idProduit'],$_POST['titreAlbum'],$_POST['artiste'],$_POST['genre'],$_POST['anneeSortie'])){
+                    $this->adminController->displayAdmin(0);
+                }
+                else {$this->adminController->displayAdmin(3);}
             }catch(PDOException $e) {
                 echo $e->getMessage();
             }
