@@ -73,6 +73,18 @@ class GestionProduit
         }
         return false;
     }
+
+    public function chercheToutLesProduits()
+    {
+        $query = "SELECT * FROM produit ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
 }
 
 ?>

@@ -22,6 +22,7 @@ class Routeur
     private $gestionClient;
     private $gestionProduit;
     private $gestionStock;
+    private $listProduit;
 
     public function __construct()
     {
@@ -35,12 +36,13 @@ class Routeur
         $this->gestionClient = new GestionClient($this->db);
         $this->gestionStock = new GestionStock($this->db);
         $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
+        $this->listProduit = $this->gestionProduit->chercheToutLesProduits();
     }
 
     public function handleRequest(){
         if(!isset($_POST['page']) || $_POST['page'] == 'accueil')
         {
-            $this->accueilController->displayAccueil();
+            $this->accueilController->displayAccueil($this->listProduit);
             return;
         }
         if($_POST['page'] == 'login')
@@ -63,7 +65,7 @@ class Routeur
             try {
                 // Requête SQL ici
                 $this->gestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville']);
-                $this->accueilController->displayAccueil();
+                $this->accueilController->displayAccueil($this->listProduit);
                 return;
               } catch (PDOException $e) {
                 if ($e->getMessage()=="SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '".$_POST['email']."' for key 'PRIMARY'") {
@@ -92,7 +94,7 @@ class Routeur
                 else 
                 {
                     $this->gestionClient->connection($_POST['email'],$_POST['mdp']);
-                    $this->accueilController->displayAccueil();
+                    $this->accueilController->displayAccueil($this->listProduit);
                 }
                 return;
             } catch (PDOException $e) {
@@ -103,7 +105,7 @@ class Routeur
         if($_POST['page'] == 'logout')
         {
             $this->gestionClient->deconnection();
-            $this->accueilController->displayAccueil();
+            $this->accueilController->displayAccueil($this->listProduit);
 
         }
         if($_POST['page'] == 'ajoutProduit')
