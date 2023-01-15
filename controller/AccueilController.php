@@ -4,11 +4,11 @@ class AccueilController
 {
     public function __construct(){}
 
-    public function displayAccueil()
+    public function displayAccueil($_array)
     {
-        $array = [];
+        $array = $_array;
         $vue = new Vue('Accueil');
-        $vue->display($array);
+        $vue->display(['listProduit' => $array]);
     }
 }
 
