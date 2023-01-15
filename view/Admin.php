@@ -2,22 +2,23 @@
 
 <div id="rechercheProduit">
     <h2>Rechercher un Produit</h2>
-    <form action="" method="post">
+    <label><strong><?= $admin[1] ?></strong></label>
+    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Titre</label>
             <input type="text" name="titreAlbum"/>
         </fieldset>
         <fieldset>
             <label>Artiste</label>
-            <input type="text" name="Artiste"/>
+            <input type="text" name="artiste"/>
         </fieldset>
         <fieldset>
             <label>Genre</label>
-            <input type="text" name="Genre"/>
+            <input type="text" name="genre"/>
         </fieldset>
         <fieldset>
             <label>Année de sortie</label>
-            <input type="text" name="AnneeSortie"/>
+            <input type="text" name="anneeSortie"/>
         </fieldset>
         <fieldset>
             <input type="hidden" name="page" value="rechercheProduit">
@@ -28,7 +29,7 @@
     <div id="ajoutProduit">
     <h2>Ajouter un Produit</h2>
     <label><strong><?= $admin[0] ?></strong></label>
-    <form action="" method="post">
+    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Titre</label>
             <input type="text" name="titreAlbum" required="required"/>
@@ -81,29 +82,30 @@
 
     <div id="supprimerProduit">
     <h2>Supprimer un Produit</h2>
-    <form action="" method="post">
+    <label><strong><?= $admin[2] ?></strong></label>
+    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Id du produit</label>
-            <input type="text" name="idProduit"/>
+            <input type="text" name="idProduit" required="required"/>
         </fieldset>
         <fieldset>
             <label>Titre</label>
-            <input type="text" name="titreAlbum"/>
+            <input type="text" name="titreAlbum" required="required"/>
         </fieldset>
         <fieldset>
             <label>Artiste</label>
-            <input type="text" name="Artiste"/>
+            <input type="text" name="artiste" required="required"/>
         </fieldset>
         <fieldset>
             <label>Genre</label>
-            <input type="text" name="Genre"/>
+            <input type="text" name="genre" required="required"/>
         </fieldset>
         <fieldset>
             <label>Année de sortie</label>
-            <input type="text" name="AnneeSortie"/>
+            <input type="text" name="anneeSortie" required="required"/>
         </fieldset>
         <fieldset>
-            <input type="hidden" name="page" value="ajoutProduit">
+            <input type="hidden" name="page" value="supprimerProduit">
             <button type="submit">Valider</button>
         </fieldset>
     </form>
