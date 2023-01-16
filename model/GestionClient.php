@@ -73,7 +73,7 @@ class GestionClient
             $_SESSION['ville']=$row['ville'];
             $_SESSION['admin']=$row['admin'];
             $_SESSION['numTel']=$row['numTel'];
-          }        
+          }
     }
 
     public function deconnection()
@@ -90,7 +90,6 @@ class GestionClient
 
         session_destroy();
     }
-
 
 }
 

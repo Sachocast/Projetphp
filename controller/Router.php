@@ -9,6 +9,7 @@ require_once __DIR__ . '/LoginController.php';
 require_once __DIR__ . '/PanierController.php';
 require_once __DIR__ . '/AdminController.php';
 require_once __DIR__ . '/APController.php';
+require_once __DIR__ . '/StocksController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Routeur
@@ -19,6 +20,7 @@ class Routeur
     private $panierController;
     private $adminController;
     private $apController;
+    private $stocksController;
     private $gestionClient;
     private $gestionProduit;
     private $gestionStock;
@@ -33,34 +35,42 @@ class Routeur
         $this->panierController = new PanierController();
         $this->adminController = new AdminController();
         $this->apController = new APController();
-        $this->gestionClient = new GestionClient($this->db);
+        $this->stocksController = new StocksController();
         $this->gestionStock = new GestionStock($this->db);
+        $this->gestionClient = new GestionClient($this->db);
         $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
         $this->listProduit = $this->gestionProduit->chercheToutLesProduits();
+
     }
 
     public function handleRequest(){
-        if(!isset($_POST['page']) || $_POST['page'] == 'accueil')
+        $this->avertissementStock();        
+        if(!isset($_POST['action']) || $_POST['action'] == 'accueil')
         {
             $this->accueilController->displayAccueil($this->listProduit);
             return;
         }
-        if($_POST['page'] == 'login')
+        if($_POST['action'] == 'login')
         {
             $this->loginController->displayLogin(0);
             return;
         } 
-        if($_POST['page'] == 'panier')
+        if($_POST['action'] == 'panier')
         {
             $this->panierController->displayPanier();
             return;
         }    
-        if($_POST['page'] == 'admin')
+        if($_POST['action'] == 'admin')
         {
             $this->adminController->displayAdmin(0);
             return;
-        }      
-        if($_POST['page'] == 'ajoutClient')
+        }
+        if($_POST['action'] == 'stocks')
+        {
+            $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
+            return;
+        }          
+        if($_POST['action'] == 'ajoutClient')
         {
             try {
                 // Requête SQL ici
@@ -83,7 +93,7 @@ class Routeur
               return;
 
         }
-        if($_POST['page'] == 'connexion')
+        if($_POST['action'] == 'connexion')
         {
             try {
                 // Requête SQL ici
@@ -94,6 +104,7 @@ class Routeur
                 else 
                 {
                     $this->gestionClient->connection($_POST['email'],$_POST['mdp']);
+                    $this->avertissementStock();        
                     $this->accueilController->displayAccueil($this->listProduit);
                 }
                 return;
@@ -102,13 +113,13 @@ class Routeur
             }
               return;
         }
-        if($_POST['page'] == 'logout')
+        if($_POST['action'] == 'logout')
         {
             $this->gestionClient->deconnection();
             $this->accueilController->displayAccueil($this->listProduit);
-
+            return;
         }
-        if($_POST['page'] == 'ajoutProduit')
+        if($_POST['action'] == 'ajoutProduit')
         {
             try {
                 if($this->gestionProduit->insert($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],$_POST['prixPublic'],$_POST['prixAchat'],
@@ -127,7 +138,7 @@ class Routeur
                 echo $e->getMessage();
             }
         }
-        if($_POST['page'] == 'rechercheProduit')
+        if($_POST['action'] == 'rechercheProduit')
         {
             try {
                 
@@ -143,13 +154,40 @@ class Routeur
                 echo $e->getMessage();
             }
         }
-        if($_POST['page'] == 'supprimerProduit')
+        if($_POST['action'] == 'supprimerProduit')
         {
             try {
                 if($this->gestionProduit->supprimer($_POST['idProduit'],$_POST['titreAlbum'],$_POST['artiste'],$_POST['genre'],$_POST['anneeSortie'])){
                     $this->adminController->displayAdmin(0);
                 }
                 else {$this->adminController->displayAdmin(3);}
+                return;
+            }catch(PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+        if($_POST['action'] == 'passerCommande')
+        {
+            try {
+                if($this->gestionProduit->verifProduit($_POST['idProduit'],$_POST['titreAlbum'])){
+                    $this->gestionStock->updateQteStock($_POST['idProduit'],$_POST['qte']);
+                    $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
+                }
+                else{ $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),1);}
+                return;
+            }catch(PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+        if($_POST['action'] == 'updateFournisseur')
+        {
+            try {
+                if($this->gestionProduit->verifProduit($_POST['idProduit'],$_POST['titreAlbum'])){
+                    $this->gestionStock->updateFournisseur($_POST['idProduit'],$_POST['nomF'],$_POST['emailF']);
+                    $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
+                }
+                else{ $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),2);}
+                return;
             }catch(PDOException $e) {
                 echo $e->getMessage();
             }
@@ -157,8 +195,13 @@ class Routeur
 
     }
 
-
-
+    private function avertissementStock()
+    {
+        if($_SESSION['admin']==true && $this->gestionStock->verifStocks()==true){
+            $_SESSION['avertissementStock']=true;
+        }
+        else{$_SESSION['avertissementStock']=false;}
+    }
 
 }
 

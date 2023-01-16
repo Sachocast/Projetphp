@@ -21,12 +21,13 @@
             <input type="text" name="anneeSortie"/>
         </fieldset>
         <fieldset>
-            <input type="hidden" name="page" value="rechercheProduit">
+            <input type="hidden" name="action" value="rechercheProduit">
             <button type="submit">Valider</button>
         </fieldset>
     </form>
+</div>
 
-    <div id="ajoutProduit">
+<div id="ajoutProduit">
     <h2>Ajouter un Produit</h2>
     <label><strong><?= $admin[0] ?></strong></label>
     <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
@@ -44,7 +45,7 @@
         </fieldset>
         <fieldset>
             <label>Année de sortie</label>
-            <input type="text" name="anneeSortie"required="required"/>
+            <input type="text" pattern='[0-9]*'  name="anneeSortie"required="required"/>
         </fieldset>
         <fieldset>
             <label>Descriptif</label>
@@ -56,11 +57,11 @@
         </fieldset>
         <fieldset>
             <label>Prix achat</label>
-            <input type="text" name="prixAchat" required="required"/>
+            <input type="text" pattern='[0-9]*'  name="prixAchat" required="required"/>
         </fieldset>
         <fieldset>
             <label>Prix public</label>
-            <input type="text" name="prixPublic" required="required"/>
+            <input type="text" pattern='[0-9]*'  name="prixPublic" required="required"/>
         </fieldset>
         <fieldset>
             <label>Fournisseur</label>
@@ -72,21 +73,22 @@
         </fieldset>
         <fieldset>
             <label>Stock</label>
-            <input type="text" name="qteStock" required="required"/>
+            <input type="text" pattern='[0-9]*'  name="qteStock" required="required"/>
         </fieldset>
         <fieldset>
-            <input type="hidden" name="page" value="ajoutProduit">
+            <input type="hidden" name="action" value="ajoutProduit">
             <button type="submit">Valider</button>
         </fieldset>
     </form>
+</div>
 
-    <div id="supprimerProduit">
+<div id="supprimerProduit">
     <h2>Supprimer un Produit</h2>
     <label><strong><?= $admin[2] ?></strong></label>
     <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
         <fieldset>
             <label>Id du produit</label>
-            <input type="text" name="idProduit" required="required"/>
+            <input type="text" pattern='[0-9]*'  name="idProduit" required="required"/>
         </fieldset>
         <fieldset>
             <label>Titre</label>
@@ -102,11 +104,18 @@
         </fieldset>
         <fieldset>
             <label>Année de sortie</label>
-            <input type="text" name="anneeSortie" required="required"/>
+            <input type="text" pattern='[0-9]*'  name="anneeSortie" required="required"/>
         </fieldset>
         <fieldset>
-            <input type="hidden" name="page" value="supprimerProduit">
+            <input type="hidden" name="action" value="supprimerProduit">
             <button type="submit">Valider</button>
         </fieldset>
+    </form>
+</div>
+
+<div id="redirigeStocks">
+    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+        <input type="hidden" name="action" value="stocks">
+        <button type="submit">Gerer les stocks</button>
     </form>
 </div>
