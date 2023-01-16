@@ -21,18 +21,18 @@ class GestionFournisseur
         }        
     }
 
-    private function verifExistePas($nomF,$emailF)
+    private function verifExistePas($emailF)
     {
-        $results = $this->recherche($nomF,$emailF);
+        $results = $this->recherche($emailF);
         if (empty($results)) {
             return true;
         } 
         return false;
     }
 
-    public function recherche($nomF,$emailF)
+    public function recherche($emailF)
     {
-        $query = "SELECT * FROM fournisseur WHERE nomF = '$nomF' AND emailF = '$emailF'";
+        $query = "SELECT * FROM fournisseur WHERE emailF = '$emailF'";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         
@@ -41,6 +41,7 @@ class GestionFournisseur
         return $results;
     }
 
+    
 
 }
 

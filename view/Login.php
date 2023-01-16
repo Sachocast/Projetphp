@@ -19,7 +19,7 @@
         <fieldset>
             <label><?= $login[1] ?></label>
             <label>Numero telephone</label>
-            <input type="text" name="numTel" required="required">
+            <input type="text" pattern='[0-9]*'  name="numTel" required="required">
         </fieldset>
         <fieldset>
             <label>Pays</label>
@@ -30,7 +30,7 @@
             <input type="text" name="ville" required="required">
         </fieldset>
         <fieldset>
-            <input type="hidden" name="page" value="ajoutClient">
+            <input type="hidden" name="action" value="ajoutClient">
             <button type="submit">Valider</button>
         </fieldset>
     </form>
@@ -50,7 +50,7 @@
             <input type="password" name="mdp" required="required"/>
         </fieldset>
         <fieldset>
-            <input type="hidden" name="page" value="connexion">
+            <input type="hidden" name="action" value="connexion">
             <button type="submit">Valider</button>
         </fieldset>
     </form>

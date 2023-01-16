@@ -65,6 +65,52 @@ class GestionStock
         }
         return false;
     }
+
+    public function chercheToutLesStocks()
+    {
+        $query = "SELECT * FROM gestion_stock ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
+    public function verifStocks(): bool
+    {
+        $results = $this->chercheToutLesStocks();
+        foreach($results as $row)
+        {
+            if($row['qteStock'] <=5)
+            { return true; }
+        }
+               
+        return false;
+    }
+
+    public function updateQteStock($idProduit, $qteAajouté)
+    {
+        $query = "UPDATE gestion_stock SET qteStock = qteStock + $qteAajouté WHERE gestion_stock.idProduit = $idProduit";
+        $stmt = $this->db->prepare($query);
+    
+        $stmt->execute();
+    }
+
+    public function updateFournisseur($idProduit,$nomF,$emailF)
+    {
+        $this->gestionFournisseur->insert($nomF,$emailF);
+        $fournisseur = $this->gestionFournisseur->recherche($emailF);
+        $idF = $fournisseur[0]['idFournisseur'];
+        $stock = $this->recherche($idProduit);
+        $idS = $stock[0]['idStock'];
+
+        $query = "UPDATE gestion_stock SET idFournisseur = $idF WHERE gestion_stock.idStock = $idS";
+        $stmt = $this->db->prepare($query);
+    
+        $stmt->execute();
+    }
 }
 
 ?>

@@ -59,6 +59,18 @@ class GestionProduit
         return $results;
     }
 
+    public function rechercheAvecId($idProduit,$titre)
+    {
+        $query = "SELECT * FROM produit WHERE idProduit = '$idProduit' AND titre = '$titre'";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
     public function supprimer($idProduit,$titre,$artiste,$genre,$anneeSortie): bool
     {
         if(!$this->verifExistePas($titre,$genre,$anneeSortie,"",$artiste))
@@ -85,6 +97,32 @@ class GestionProduit
 
         return $results;
     }
+
+    public function selectInfoProduitStockCritique()
+    {
+        $query = "SELECT produit.idProduit,idStock,titre,qteStock,prixAchat,emailF,nomF FROM produit,gestion_stock,fournisseur 
+        WHERE produit.idProduit = gestion_stock.idProduit
+        AND gestion_stock.idFournisseur = fournisseur.idFournisseur
+        AND gestion_stock.qteStock <=5";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
+    public function verifProduit($idProduit,$titre) : bool
+    {
+        $results = $this->rechercheAvecId($idProduit,$titre);
+        if (empty($results)) {
+            return false;
+        } 
+        return true;
+        
+    }
+
 }
 
 ?>
