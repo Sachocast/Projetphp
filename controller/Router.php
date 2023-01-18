@@ -4,12 +4,14 @@ require_once __DIR__ . '/../model/ConnexionDB.php';
 require_once __DIR__ . '/../model/GestionClient.php';
 require_once __DIR__ . '/../model/GestionProduit.php';
 require_once __DIR__ . '/../model/GestionStock.php';
+require_once __DIR__ . '/../model/GestionPanier.php';
 require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
 require_once __DIR__ . '/PanierController.php';
 require_once __DIR__ . '/AdminController.php';
 require_once __DIR__ . '/APController.php';
 require_once __DIR__ . '/StocksController.php';
+require_once __DIR__ . '/VVController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Routeur
@@ -21,9 +23,11 @@ class Routeur
     private $adminController;
     private $apController;
     private $stocksController;
+    private $vvController;
     private $gestionClient;
     private $gestionProduit;
     private $gestionStock;
+    private $gestionPanier;
     private $listProduit;
 
     public function __construct()
@@ -36,11 +40,16 @@ class Routeur
         $this->adminController = new AdminController();
         $this->apController = new APController();
         $this->stocksController = new StocksController();
+        $this->vvController = new VVController();
         $this->gestionStock = new GestionStock($this->db);
         $this->gestionClient = new GestionClient($this->db);
         $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
+        $this->gestionPanier = new GestionPanier($this->db);
         $this->listProduit = $this->gestionProduit->chercheToutLesProduits();
-
+        $this->connection();
+        if($_POST['action']!='validerPanier'){
+            $this->gestionPanier->deleteFacture();
+        }
     }
 
     public function handleRequest(){
@@ -56,8 +65,9 @@ class Routeur
             return;
         } 
         if($_POST['action'] == 'panier')
-        {
-            $this->panierController->displayPanier();
+        {   
+            $this->gestionPanier->createFacture();
+            $this->panierController->displayPanier($this->gestionPanier->chercheLesProduitsDuPanier());
             return;
         }    
         if($_POST['action'] == 'admin')
@@ -69,7 +79,12 @@ class Routeur
         {
             $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
             return;
-        }          
+        }
+        if($_POST['action'] == 'validerPanier')
+        {
+            $this->vvController->displayVV($this->gestionPanier->selectFacture(),$this->gestionPanier->selectListeProduit());
+            return;
+        }             
         if($_POST['action'] == 'ajoutClient')
         {
             try {
@@ -192,6 +207,23 @@ class Routeur
                 echo $e->getMessage();
             }
         }
+        if($_POST['action'] == 'ajouterPanier')
+        {
+            try {
+                $this->gestionPanier->createSessionPanier($this->gestionProduit->rechercheAvecId($_POST['idProduit'],$_POST['titreAlbum']));
+                $this->accueilController->displayAccueil($this->listProduit);
+
+                return;
+            }catch(PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+        if($_POST['action'] == 'viderPanier')
+        {
+            $this->gestionPanier->viderPanier();
+            $this->panierController->displayPanier($this->gestionPanier->chercheLesProduitsDuPanier());
+            return;
+        }
 
     }
 
@@ -201,6 +233,19 @@ class Routeur
             $_SESSION['avertissementStock']=true;
         }
         else{$_SESSION['avertissementStock']=false;}
+    }
+
+    private function connection()
+    {
+        if(isset($_COOKIE['email'])){
+            $_SESSION['email']=$_COOKIE['email'];
+            $_SESSION['nomUtil']=$_COOKIE['nomUtil'];
+            $_SESSION['mdp']=$_COOKIE['mdp'];
+            $_SESSION['pays']=$_COOKIE['pays'];
+            $_SESSION['ville']=$_COOKIE['ville'];
+            $_SESSION['admin']=$_COOKIE['admin'];
+            $_SESSION['numTel']=$_COOKIE['numTel'];
+        }
     }
 
 }

@@ -74,10 +74,34 @@ class GestionClient
             $_SESSION['admin']=$row['admin'];
             $_SESSION['numTel']=$row['numTel'];
           }
+          $this->createCookies();
+    }
+
+    private function createCookies()
+    {
+        setcookie('email',$_SESSION['email'],time()+(86400*30));
+        setcookie('nomUtil',$_SESSION['nomUtil'],time()+(86400*30));
+        setcookie('mdp',$_SESSION['mdp'],time()+(86400*30));
+        setcookie('pays',$_SESSION['pays'],time()+(86400*30));
+        setcookie('ville',$_SESSION['ville'],time()+(86400*30));
+        setcookie('admin',$_SESSION['admin'],time()+(86400*30));
+        setcookie('numTel',$_SESSION['numTel'],time()+(86400*30));
+    }
+
+    private function destroyCookies()
+    {
+        setcookie('email',"",time()-(86400*30));
+        setcookie('nomUtil',"",time()-(86400*30));
+        setcookie('mdp',"",time()-(86400*30));
+        setcookie('pays',"",time()-(86400*30));
+        setcookie('ville',"",time()-(86400*30));
+        setcookie('admin',"",time()-(86400*30));
+        setcookie('numTel',"",time()-(86400*30));
     }
 
     public function deconnection()
     {
+        $this->destroyCookies();
         $_SESSION = array();
 
         if (ini_get("session.use_cookies")) {
