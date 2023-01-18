@@ -4,11 +4,11 @@ class PanierController
 {
     public function __construct(){}
 
-    public function displayPanier()
+    public function displayPanier($_array)
     {
-        $array = [];
+        $array = $_array;
         $vue = new Vue('Panier');
-        $vue->display($array);
+        $vue->display(['panier' => $array]);
     }
 }
 
