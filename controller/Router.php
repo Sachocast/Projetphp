@@ -1,10 +1,13 @@
 <?php
 
+use function PHPSTORM_META\type;
+
 require_once __DIR__ . '/../model/ConnexionDB.php';
 require_once __DIR__ . '/../model/GestionClient.php';
 require_once __DIR__ . '/../model/GestionProduit.php';
 require_once __DIR__ . '/../model/GestionStock.php';
 require_once __DIR__ . '/../model/GestionPanier.php';
+require_once __DIR__ . '/../model/GestionCompta.php';
 require_once __DIR__ . '/AccueilController.php';
 require_once __DIR__ . '/LoginController.php';
 require_once __DIR__ . '/PanierController.php';
@@ -28,6 +31,7 @@ class Routeur
     private $gestionProduit;
     private $gestionStock;
     private $gestionPanier;
+    private $gestionCompta;
     private $listProduit;
 
     public function __construct()
@@ -45,15 +49,16 @@ class Routeur
         $this->gestionClient = new GestionClient($this->db);
         $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
         $this->gestionPanier = new GestionPanier($this->db);
+        $this->gestionCompta = new GestionCompta($this->db);
         $this->listProduit = $this->gestionProduit->chercheToutLesProduits();
         $this->connection();
-        if($_POST['action']!='validerPanier'){
+        if(($_POST['action']!='validerPanier') && ($_POST['action']!='paiement')){
             $this->gestionPanier->deleteFacture();
         }
     }
 
     public function handleRequest(){
-        $this->avertissementStock();        
+        $this->avertissementStock();   
         if(!isset($_POST['action']) || $_POST['action'] == 'accueil')
         {
             $this->accueilController->displayAccueil($this->listProduit);
@@ -79,12 +84,7 @@ class Routeur
         {
             $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
             return;
-        }
-        if($_POST['action'] == 'validerPanier')
-        {
-            $this->vvController->displayVV($this->gestionPanier->selectFacture(),$this->gestionPanier->selectListeProduit());
-            return;
-        }             
+        }       
         if($_POST['action'] == 'ajoutClient')
         {
             try {
@@ -185,7 +185,9 @@ class Routeur
         {
             try {
                 if($this->gestionProduit->verifProduit($_POST['idProduit'],$_POST['titreAlbum'])){
+                    $produit = $this->gestionProduit->rechercheAvecId($_POST['idProduit'],$_POST['titreAlbum']);
                     $this->gestionStock->updateQteStock($_POST['idProduit'],$_POST['qte']);
+                    $this->gestionCompta->metAjourDebit($produit['prixAchat'],$_POST['qte']);
                     $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
                 }
                 else{ $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),1);}
@@ -224,6 +226,20 @@ class Routeur
             $this->panierController->displayPanier($this->gestionPanier->chercheLesProduitsDuPanier());
             return;
         }
+        if($_POST['action'] == 'validerPanier')
+        {
+            $this->vvController->displayVV($this->gestionPanier->selectFacture(),$this->gestionPanier->selectListeProduit(),$this->gestionPanier->selectInfo());
+            return;
+        } 
+        if($_POST['action'] == 'paiement')
+        {
+            $this->gestionPanier->finPaiement();
+            $this->gestionCompta->metAjourCA();
+            $this->gestionStock->metAjourStock();     
+            $_POST['action'] = 'viderPanier';
+            $this->handleRequest();
+            return;
+        }      
 
     }
 

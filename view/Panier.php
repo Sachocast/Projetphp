@@ -22,7 +22,6 @@ if(isset($_SESSION['panier'])){
             array_push($val, $panier[$j][0]['idProduit']);
         }
     }
-
     $unique_items = array_unique($panier, SORT_REGULAR); ?>
 
     <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">

@@ -101,21 +101,21 @@ class GestionPanier
             for($j = 0; $j <count($panier); $j++) { 
                 $cpt =0; $verify = false;
                 foreach($val as $k){
-                    if($panier[$j][0]['idProduit']==$k) $verify = true;
+                    if($panier[$j]==$k) $verify = true;
                 }
                 if(!$verify){
                     for($index = 0; $index < count($panier); $index++) 
                     {
-                        if($panier[$j][0]['idProduit'] == $panier[$index][0]['idProduit'])
+                        if($panier[$j] == $panier[$index])
                         {
                             $cpt++;
                         }
                     }
                     array_push($count, $cpt);
-                    array_push($val, $panier[$j][0]['idProduit']);
+                    array_push($val, $panier[$j]);
                 }
             }
-        
+            $_SESSION['count'] = json_encode($count);
             $produitUnique = array_unique($panier, SORT_REGULAR);
             $this->insertListeProduit($count, $produitUnique);
         }
@@ -165,6 +165,7 @@ class GestionPanier
                 $stmt = $this->db->prepare($query);
 
                 $stmt->execute();
+                $i++;
             endforeach;
         }catch(PDOException $e){
             echo $e->getMessage();
@@ -198,6 +199,7 @@ class GestionPanier
 
             $stmt->execute();
             $result = $stmt->fetchAll();
+            $_SESSION['prix']= $result[0]['prix'];
             return $result;
 
         }catch(PDOException $e){
@@ -221,6 +223,39 @@ class GestionPanier
         }
     }
     
+    public function selectInfo()
+    {
+        try{
+            $panier = json_decode($_SESSION['panier']);
+            $produitUnique = array_unique($panier, SORT_REGULAR);
+            $result = [];
+            for($j = 0; $j <count($produitUnique); $j++) { 
+                $id = $produitUnique[$j];
+                $query = "SELECT produit.titre, produit.cover FROM produit,listeProduit WHERE produit.idProduit = listeProduit.idProduit AND produit.idProduit = '$id'";
+                $stmt = $this->db->prepare($query);
+
+                $stmt->execute();
+                array_push($result,$stmt->fetchAll());
+            }
+
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    public function finPaiement()
+    {
+        try{
+            $email = $_SESSION['email'];
+            $query = "UPDATE facturation SET valider ='1' WHERE emailClient = '$email' and valider = '0'";
+            $stmt = $this->db->prepare($query);
+
+            $stmt->execute();
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

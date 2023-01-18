@@ -111,6 +111,26 @@ class GestionStock
     
         $stmt->execute();
     }
+
+    public function metAjourStock()
+    {
+        $panier = json_decode($_SESSION['panier']);
+        $produitUnique = array_unique($panier, SORT_REGULAR);
+        $count = json_decode($_SESSION['count']);
+        $i = 0;
+        foreach ($produitUnique as $idProduit) :
+            $id = $idProduit; $qte = $count[$i];
+            try{
+                $query = "UPDATE gestion_stock SET qteStock= qteStock-$qte WHERE idProduit = '$id'";
+                $stmt = $this->db->prepare($query);
+    
+                $stmt->execute();
+            }catch(PDOException $e){
+                echo $e->getMessage();
+            }
+            $i++;            
+        endforeach;
+    }
 }
 
 ?>
