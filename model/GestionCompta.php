@@ -30,8 +30,8 @@ class GestionCompta
     {
         try{
             $date = date("Y");
-            $query = "insert into compta (annee, produitvendu, chiffreAffaire, achat, montant) 
-            values ('$date', '0', '0', '0','0')";
+            $query = "insert into compta (annee,chiffreAffaire, debit) 
+            values ('$date', '0', '0')";
             $stmt = $this->db->prepare($query);
     
             $stmt->execute();
@@ -74,6 +74,19 @@ class GestionCompta
         }
     }
     
+    public function insertListeAchat($idProduit,$qte,$prixAchat)
+    {
+        try{
+            $date = date("Y");
+            $query = "insert into listeAchat (idProduit, qte, prixAchat, date) 
+            values ('$idProduit','$qte', '$prixAchat', $date)";
+            $stmt = $this->db->prepare($query);
+
+            $stmt->execute();
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
 
 }
 

@@ -1,4 +1,4 @@
-<?php $title = "Accueil"; ?>
+<?php $title = "PageArtiste"; ?>
 
 <?php foreach ($listProduit as $produit) : ?>
     <h2><?= $produit['titre'] ?></h2>
@@ -7,11 +7,6 @@
         <input type="hidden" name="genre" value=<?= $produit['genre']?>>
         <input type="hidden" name="action" value="pageGenre">
         <button type="submit"><?= $produit['genre']?></button>
-    </form>
-    <form action="/controller/Router.php" method="post">
-        <input type="hidden" name="artiste" value=<?= $produit['artiste']?>>
-        <input type="hidden" name="action" value="pageArtiste">
-        <button type="submit"><?= $produit['artiste']?></button>
     </form>
     <p><?= $produit['anneeSortie'] ?></p>
 	<p><?= $produit['prixPublic'] ?></p>

@@ -15,6 +15,8 @@ require_once __DIR__ . '/AdminController.php';
 require_once __DIR__ . '/APController.php';
 require_once __DIR__ . '/StocksController.php';
 require_once __DIR__ . '/VVController.php';
+require_once __DIR__ . '/PAController.php';
+require_once __DIR__ . '/PGController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Routeur
@@ -27,6 +29,8 @@ class Routeur
     private $apController;
     private $stocksController;
     private $vvController;
+    private $paController;
+    private $pgController;
     private $gestionClient;
     private $gestionProduit;
     private $gestionStock;
@@ -45,6 +49,8 @@ class Routeur
         $this->apController = new APController();
         $this->stocksController = new StocksController();
         $this->vvController = new VVController();
+        $this->paController = new paController();
+        $this->pgController = new pgController();
         $this->gestionStock = new GestionStock($this->db);
         $this->gestionClient = new GestionClient($this->db);
         $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
@@ -52,8 +58,9 @@ class Routeur
         $this->gestionCompta = new GestionCompta($this->db);
         $this->listProduit = $this->gestionProduit->chercheToutLesProduits();
         $this->connection();
-        if(($_POST['action']!='validerPanier') && ($_POST['action']!='paiement')){
-            $this->gestionPanier->deleteFacture();
+        if(isset($_POST['action'])){
+            if(($_POST['action']!='validerPanier') && ($_POST['action']!='paiement')){
+                $this->gestionPanier->deleteFacture();}
         }
     }
 
@@ -62,6 +69,16 @@ class Routeur
         if(!isset($_POST['action']) || $_POST['action'] == 'accueil')
         {
             $this->accueilController->displayAccueil($this->listProduit);
+            return;
+        }
+        if($_POST['action'] == 'pageArtiste')
+        {
+            $this->paController->displayPA(($this->gestionProduit->chercheToutLesProduitsArtiste($_POST['artiste'])));
+            return;
+        }
+        if($_POST['action'] == 'pageGenre')
+        {
+            $this->pgController->displayPG(($this->gestionProduit->chercheToutLesProduitsGenre($_POST['genre'])));
             return;
         }
         if($_POST['action'] == 'login')
@@ -187,7 +204,8 @@ class Routeur
                 if($this->gestionProduit->verifProduit($_POST['idProduit'],$_POST['titreAlbum'])){
                     $produit = $this->gestionProduit->rechercheAvecId($_POST['idProduit'],$_POST['titreAlbum']);
                     $this->gestionStock->updateQteStock($_POST['idProduit'],$_POST['qte']);
-                    $this->gestionCompta->metAjourDebit($produit['prixAchat'],$_POST['qte']);
+                    $this->gestionCompta->insertListeAchat($produit[0]['idProduit'],$_POST['qte'],$produit[0]['prixAchat']);
+                    $this->gestionCompta->metAjourDebit($produit[0]['prixAchat'],$_POST['qte']);
                     $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
                 }
                 else{ $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),1);}
@@ -245,10 +263,12 @@ class Routeur
 
     private function avertissementStock()
     {
-        if($_SESSION['admin']==true && $this->gestionStock->verifStocks()==true){
-            $_SESSION['avertissementStock']=true;
+        if(isset($_SESSION['admin'])){
+            if($_SESSION['admin']==true && $this->gestionStock->verifStocks()==true){
+                $_SESSION['avertissementStock']=true;
+            }
+            else{$_SESSION['avertissementStock']=false;}
         }
-        else{$_SESSION['avertissementStock']=false;}
     }
 
     private function connection()

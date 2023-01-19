@@ -15,7 +15,7 @@
 <div id=ajoutQteStock>
 <h2>Passer Commande</h2>
 <label><strong> <?= $verifErreur[0] ?></strong></label>
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <fieldset>
             <label>Id du produit</label>
             <input type="text" name="idProduit" required="required"/>
@@ -38,7 +38,7 @@
 <div id=ajoutQteStock>
 <h2>Changer fournisseur</h2>
 <label><strong> <?= $verifErreur[1] ?></strong></label>
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <fieldset>
             <label>Id du produit</label>
             <input type="text" name="idProduit" required="required"/>

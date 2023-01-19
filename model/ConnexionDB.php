@@ -9,7 +9,7 @@ class ConnexionDB
         if($this->db == null)
         {
             try {
-            $this->db = new PDO("mysql:host=localhost;port=5432;dbname=cs102126@projet3.01", 'cs102126','Luffy_c03');
+            $this->db = new PDO("mysql:host=localhost;port=5432;dbname=id20172783_cs102126projetphp", 'id20172783_cs102126','Luffy__c0123');
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch(PDOException $e) {

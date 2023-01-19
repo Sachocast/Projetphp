@@ -24,11 +24,11 @@ if(isset($_SESSION['panier'])){
     }
     $unique_items = array_unique($panier, SORT_REGULAR); ?>
 
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
     <?php     $j=0;
         foreach ($unique_items as $produit) : ?>
             <h2><?= $produit[0]['titre'] ?></h2>
-            <img src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/album/<?= $produit[0]['cover'] ?>" width=5% height=10% alt=<?= $produit[0]['cover'] ?>>
+            <img src="/assets/img/album/<?= $produit[0]['cover'] ?>" width=5% height=10% alt=<?= $produit[0]['cover'] ?>>
             <p><?= $produit[0]['artiste'] ?></p>
             <p><?= $produit[0]['prixPublic'] ?></p>
             <label><?= $count[$j]; ?></label>
@@ -39,7 +39,7 @@ if(isset($_SESSION['panier'])){
     </form>
 <?php } ?>
 
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <input type="hidden" name="action" value="viderPanier">
         <button type="submit">Vider le panier</button>
     </form>

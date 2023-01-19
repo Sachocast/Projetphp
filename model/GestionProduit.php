@@ -88,7 +88,31 @@ class GestionProduit
 
     public function chercheToutLesProduits()
     {
-        $query = "SELECT * FROM produit ";
+        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
+    public function chercheToutLesProduitsArtiste($artiste)
+    {
+        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit AND artiste = '$artiste'";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
+    public function chercheToutLesProduitsGenre($genre)
+    {
+        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit AND genre = '$genre'";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();

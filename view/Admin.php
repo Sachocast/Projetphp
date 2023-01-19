@@ -3,7 +3,7 @@
 <div id="rechercheProduit">
     <h2>Rechercher un Produit</h2>
     <label><strong><?= $admin[1] ?></strong></label>
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <fieldset>
             <label>Titre</label>
             <input type="text" name="titreAlbum"/>
@@ -30,7 +30,7 @@
 <div id="ajoutProduit">
     <h2>Ajouter un Produit</h2>
     <label><strong><?= $admin[0] ?></strong></label>
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <fieldset>
             <label>Titre</label>
             <input type="text" name="titreAlbum" required="required"/>
@@ -85,7 +85,7 @@
 <div id="supprimerProduit">
     <h2>Supprimer un Produit</h2>
     <label><strong><?= $admin[2] ?></strong></label>
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <fieldset>
             <label>Id du produit</label>
             <input type="text" pattern='[0-9]*'  name="idProduit" required="required"/>
@@ -114,7 +114,7 @@
 </div>
 
 <div id="redirigeStocks">
-    <form action="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/controller/Router.php" method="post">
+    <form action="/controller/Router.php" method="post">
         <input type="hidden" name="action" value="stocks">
         <button type="submit">Gerer les stocks</button>
     </form>

@@ -30,16 +30,18 @@ class GestionPanier
 
     public function chercheLesProduitsDuPanier()
     {
-        $panier = [];
-        foreach (json_decode($_SESSION['panier'], true) as $idProduit){ 
-            $query = "SELECT * FROM produit WHERE idProduit = '$idProduit'";
+        if(isset($_SESSION['panier'])){
+            $panier = [];
+            foreach (json_decode($_SESSION['panier'], true) as $idProduit){ 
+                $query = "SELECT * FROM produit WHERE idProduit = '$idProduit'";
 
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
-        
-            array_push($panier,$stmt->fetchAll());
+                $stmt = $this->db->prepare($query);
+                $stmt->execute();
+            
+                array_push($panier,$stmt->fetchAll());
+            }
+            return $panier;
         }
-        return $panier;
     }
 
     private function calculPrix()
@@ -79,15 +81,17 @@ class GestionPanier
 
     public function deleteFacture()
     {
-        try{
-            $this->deleteListeProduit();
-            $email = $_SESSION['email'];
-            $query = "DELETE FROM facturation WHERE emailClient = '$email' and valider = '0'";
-            $stmt = $this->db->prepare($query);
+        if(isset($_SESSION['email']) ){
+            try{
+                $this->deleteListeProduit();
+                $email = $_SESSION['email'];
+                $query = "DELETE FROM facturation WHERE emailClient = '$email' and valider = '0'";
+                $stmt = $this->db->prepare($query);
 
-            $stmt->execute();
-        }catch(PDOException $e){
-            echo $e->getMessage();
+                $stmt->execute();
+            }catch(PDOException $e){
+                echo $e->getMessage();
+            }
         }
     }
 
@@ -121,21 +125,6 @@ class GestionPanier
         }
     }
 
-    private function selectIdPanier()
-    {
-        try{
-            $email = $_SESSION['email'];
-            $query = "SELECT facturation.idPanier FROM facturation WHERE emailClient = '$email' and valider = '0'";
-            $stmt = $this->db->prepare($query);
-
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-            return $result[0]['idPanier'];
-
-        }catch(PDOException $e){
-            echo $e->getMessage();
-        }
-    }
 
     private function selectPrixProduit($idProduit)
     {
@@ -156,12 +145,13 @@ class GestionPanier
     {
         try{
             $i=0;
-            $idPanier = $this->selectIdPanier();
+            $panier = $this->selectFacture();
+            $idPanier=$panier[0]['IdPanier'];
             foreach ($produitUnique as $produit) :
                 $idProduit = $produit;
-                $qte = $count[$i]; $prix = $this->selectPrixProduit($idProduit);
-                $query = "insert into listeProduit (idProduit, qte, prixDuProduit, idPanier) 
-                values ('$idProduit','$qte', '$prix','$idPanier')";
+                $qte = $count[$i]; $prix = $this->selectPrixProduit($idProduit); $date = date("Y");
+                $query = "insert into listeProduit (idProduit, qte, prixDuProduit, idPanier, date) 
+                values ('$idProduit','$qte', '$prix','$idPanier', $date)";
                 $stmt = $this->db->prepare($query);
 
                 $stmt->execute();
@@ -175,11 +165,13 @@ class GestionPanier
     private function deleteListeProduit()
     {
         try{
-            $idPanier = $this->selectIdPanier();
+            $panier = $this->selectFacture();
+            if(!empty($panier)){
+            $idPanier=$panier[0]['IdPanier'];
             $query = "DELETE FROM listeProduit WHERE idPanier = '$idPanier'";
             $stmt = $this->db->prepare($query);
 
-            $stmt->execute();
+            $stmt->execute();}
         }catch(PDOException $e){
             echo $e->getMessage();
         }
@@ -199,7 +191,7 @@ class GestionPanier
 
             $stmt->execute();
             $result = $stmt->fetchAll();
-            $_SESSION['prix']= $result[0]['prix'];
+            if(!empty($result)){$_SESSION['prix']= $result[0]['prix'];}
             return $result;
 
         }catch(PDOException $e){
@@ -210,7 +202,8 @@ class GestionPanier
     public function selectListeProduit()
     {
         try{
-            $idPanier = $this->selectIdPanier();
+            $panier = $this->selectFacture();
+            $idPanier=$panier[0]['IdPanier'];
             $query = "SELECT * FROM listeProduit WHERE idPanier = '$idPanier'";
             $stmt = $this->db->prepare($query);
 
@@ -230,12 +223,13 @@ class GestionPanier
             $produitUnique = array_unique($panier, SORT_REGULAR);
             $result = [];
             for($j = 0; $j <count($produitUnique); $j++) { 
+                if(isset($produitUnique[$j])){
                 $id = $produitUnique[$j];
                 $query = "SELECT produit.titre, produit.cover FROM produit,listeProduit WHERE produit.idProduit = listeProduit.idProduit AND produit.idProduit = '$id'";
                 $stmt = $this->db->prepare($query);
 
                 $stmt->execute();
-                array_push($result,$stmt->fetchAll());
+                array_push($result,$stmt->fetchAll());}
             }
 
         }catch(PDOException $e){

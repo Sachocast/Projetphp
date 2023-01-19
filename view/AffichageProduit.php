@@ -1,6 +1,6 @@
 <?php $title = "AffichageProduit"; ?>
  
-<img src="https://linserv-info-01.campus.unice.fr/~cs102126/R301/Projetphp/assets/img/album/<?= $ap[0]['cover'] ?>" alt=<?= $ap[0]['cover'] ?>>
+<img src="/assets/img/album/<?= $ap[0]['cover'] ?>" alt=<?= $ap[0]['cover'] ?>>
 <br>
 <label><?= $ap[0]['idProduit'] ?></label>
 <br>
