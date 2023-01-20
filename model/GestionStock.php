@@ -12,17 +12,21 @@ class GestionStock
         $this->gestionFournisseur = new GestionFournisseur($bdd);
     }
 
-    public function insert($idProduit,$qteStock,$nomF,$emailF)
+    public function insert($idProduit,$qteStock,$emailF)
     {
         if($this->verifExistePas($idProduit))
         {
             $qteStock = intval($qteStock);
             $idFournisseur = $this->chercheIdFournisseur($emailF);
             $query = "insert into gestion_stock (idProduit,idFournisseur,qteStock) 
-            values ('$idProduit', '$idFournisseur','$qteStock')";
-            $stmt = $this->db->prepare($query);
+            values (:idProduit, :idFournisseur,:qteStock)";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-            $stmt->execute();
+            $stmt->execute([
+                'idProduit' => $idProduit,
+                'idFournisseur' => $idFournisseur,
+                'qteStock' => $qteStock
+            ]);
         }        
     }
 
@@ -38,9 +42,11 @@ class GestionStock
 
     public function recherche($idProduit)
     {
-        $query = "SELECT * FROM gestion_stock WHERE idProduit = '$idProduit'";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $query = "SELECT * FROM gestion_stock WHERE idProduit = :idProduit";
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'idProduit' => $idProduit
+        ]);
         
         $results = $stmt->fetchAll();
 
@@ -57,10 +63,12 @@ class GestionStock
     {
         if(!$this->verifExistePas($idProduit))
         {
-            $query = "DELETE FROM gestion_stock WHERE idProduit = '$idProduit'";
-            $stmt = $this->db->prepare($query);
+            $query = "DELETE FROM gestion_stock WHERE idProduit = :idProduit";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-            $stmt->execute();
+            $stmt->execute([
+                'idProduit' => $idProduit
+            ]);
             return true;
         }
         return false;
@@ -90,12 +98,15 @@ class GestionStock
         return false;
     }
 
-    public function updateQteStock($idProduit, $qteAajouté)
+    public function updateQteStock($idProduit, $qteAjoute)
     {
-        $query = "UPDATE gestion_stock SET qteStock = qteStock + $qteAajouté WHERE gestion_stock.idProduit = $idProduit";
-        $stmt = $this->db->prepare($query);
+        $query = "UPDATE gestion_stock SET qteStock = qteStock + :qteAjoute WHERE gestion_stock.idProduit = :idProduit";
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-        $stmt->execute();
+        $stmt->execute([
+            'qteAjoute' => $qteAjoute,
+            'idProduit' => $idProduit
+        ]);
     }
 
     public function updateFournisseur($idProduit,$nomF,$emailF)
@@ -106,10 +117,13 @@ class GestionStock
         $stock = $this->recherche($idProduit);
         $idS = $stock[0]['idStock'];
 
-        $query = "UPDATE gestion_stock SET idFournisseur = $idF WHERE gestion_stock.idStock = $idS";
-        $stmt = $this->db->prepare($query);
+        $query = "UPDATE gestion_stock SET idFournisseur = :idF WHERE gestion_stock.idStock = :idS";
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-        $stmt->execute();
+        $stmt->execute([
+            'idF' => $idF,
+            'idS' => $idS
+        ]);
     }
 
     public function metAjourStock()
@@ -121,10 +135,13 @@ class GestionStock
         foreach ($produitUnique as $idProduit) :
             $id = $idProduit; $qte = $count[$i];
             try{
-                $query = "UPDATE gestion_stock SET qteStock= qteStock-$qte WHERE idProduit = '$id'";
-                $stmt = $this->db->prepare($query);
+                $query = "UPDATE gestion_stock SET qteStock= qteStock-:qte WHERE idProduit = :id";
+                $stmt = $this->db->prepare($query,[PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-                $stmt->execute();
+                $stmt->execute([
+                    'qte' => $qte,
+                    'id' => $id
+                ]);
             }catch(PDOException $e){
                 echo $e->getMessage();
             }

@@ -12,11 +12,13 @@ class GestionCompta
 
     private function verifCompta(): bool
     {   
-        $date = date("Y");
-        $query = "SELECT * FROM compta WHERE annee = '$date'";
+        $annee = date("Y");
+        $query = "SELECT * FROM compta WHERE annee = :annee";
  
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'annee' => $annee
+        ]);
         
         $results = $stmt->fetchAll();
 
@@ -29,12 +31,14 @@ class GestionCompta
     private function insertCompta()
     {
         try{
-            $date = date("Y");
+            $annee = date("Y");
             $query = "insert into compta (annee,chiffreAffaire, debit) 
-            values ('$date', '0', '0')";
-            $stmt = $this->db->prepare($query);
+            values (:annee, '0', '0')";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-            $stmt->execute();
+            $stmt->execute([
+                'annee' => $annee
+            ]);
         }catch(PDOException $e){
             echo $e->getMessage();
         }
@@ -47,11 +51,14 @@ class GestionCompta
             $this->insertCompta();
         }
         try{
-            $date = date("Y"); $prix = $_SESSION['prix'];
-            $query = "UPDATE compta SET chiffreAffaire= chiffreAffaire+$prix WHERE annee = '$date'";
-            $stmt = $this->db->prepare($query);
+            $annee = date("Y"); $prix = $_SESSION['prix'];
+            $query = "UPDATE compta SET chiffreAffaire= chiffreAffaire+:prix WHERE annee = :annee";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'prix' => $prix,
+                'annee' => $annee
+            ]);
         }catch(PDOException $e){
             echo $e->getMessage();
         }
@@ -64,11 +71,14 @@ class GestionCompta
             $this->insertCompta();
         }
         try{
-            $date = date("Y");$debit = $debit*$qte;
-            $query = "UPDATE compta SET debit= debit+$debit WHERE annee = '$date'";
-            $stmt = $this->db->prepare($query);
+            $annee = date("Y");$nvdebit = $debit*$qte;
+            $query = "UPDATE compta SET debit= debit+:nvdebit WHERE annee = :annee";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'nvdebit' => $nvdebit,
+                'annee' => $annee
+            ]);
         }catch(PDOException $e){
             echo $e->getMessage();
         }
@@ -77,12 +87,17 @@ class GestionCompta
     public function insertListeAchat($idProduit,$qte,$prixAchat)
     {
         try{
-            $date = date("Y");
+            $annee = date("Y");
             $query = "insert into listeAchat (idProduit, qte, prixAchat, annee) 
-            values ('$idProduit','$qte', '$prixAchat', $date)";
-            $stmt = $this->db->prepare($query);
+            values (:idProduit, :qte, :prixAchat, :annee)";
+            $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'idProduit' => $idProduit,
+                'qte' => $qte,
+                'prixAchat' => $prixAchat,
+                'annee' => $annee
+            ]);
         }catch(PDOException $e){
             echo $e->getMessage();
         }
@@ -91,11 +106,13 @@ class GestionCompta
     public function selectAnnee()
     {
         try{
-            $date = date("Y");
-            $query = "SELECT * FROM compta WHERE annee = '$date'";
-            $stmt = $this->db->prepare($query);
+            $annee = date("Y");
+            $query = "SELECT * FROM compta WHERE annee = annee";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'annee' => $annee
+            ]);
             $results = $stmt->fetchAll();
 
             return $results;
@@ -107,11 +124,13 @@ class GestionCompta
     public function selectCredit()
     {
         try{
-            $date = date("Y");
-            $query = "SELECT listeProduit.*, produit.titre FROM listeProduit,produit WHERE annee = $date AND produit.idProduit=listeProduit.idProduit";
-            $stmt = $this->db->prepare($query);
+            $annee = date("Y");
+            $query = "SELECT listeProduit.*, produit.titre FROM listeProduit,produit WHERE annee = :annee AND produit.idProduit=listeProduit.idProduit";
+            $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'annee' => $annee
+            ]);
             $results = $stmt->fetchAll();
 
             return $results;
@@ -123,11 +142,13 @@ class GestionCompta
     public function selectDebit()
     {
         try{
-            $date = date("Y");
-            $query = "SELECT listeAchat.*, produit.titre FROM listeAchat,produit WHERE annee = $date AND produit.idProduit=listeAchat.idProduit";
-            $stmt = $this->db->prepare($query);
+            $annee = date("Y");
+            $query = "SELECT listeAchat.*, produit.titre FROM listeAchat,produit WHERE annee = :annee AND produit.idProduit=listeAchat.idProduit";
+            $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'annee' => $annee
+            ]);
             $results = $stmt->fetchAll();
 
             return $results;

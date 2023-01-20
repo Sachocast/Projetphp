@@ -33,10 +33,12 @@ class GestionPanier
         if(isset($_SESSION['panier'])){
             $panier = [];
             foreach (json_decode($_SESSION['panier'], true) as $idProduit){ 
-                $query = "SELECT * FROM produit WHERE idProduit = '$idProduit'";
+                $query = "SELECT * FROM produit WHERE idProduit = :idProduit";
 
-                $stmt = $this->db->prepare($query);
-                $stmt->execute();
+                $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+                $stmt->execute([
+                    'idProduit' => $idProduit
+                ]);
             
                 array_push($panier,$stmt->fetchAll());
             }
@@ -49,10 +51,12 @@ class GestionPanier
         $prix = 0;
         $result = [];
         foreach (json_decode($_SESSION['panier'], true) as $idProduit){ 
-            $query = "SELECT produit.prixPublic FROM produit WHERE idProduit = '$idProduit'";
+            $query = "SELECT produit.prixPublic FROM produit WHERE idProduit = :idProduit";
 
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
+            $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $stmt->execute([
+                'idProduit' => $idProduit
+            ]);
         
             $result = $stmt->fetchAll();
             $prix+= $result[0]['prixPublic'];
@@ -66,12 +70,17 @@ class GestionPanier
         {
             try{
                 $email = $_SESSION['email']; $nom = $_SESSION['nomUtil']; 
-                $prix = $this->calculPrix(); $date = date("Y-m-d");
+                $prix = $this->calculPrix(); $dateCrea = date("Y-m-d");
                 $query = "insert into facturation (dateCreation, emailClient, nomClient, prix, valider) 
-                values ('$date', '$email', '$nom', '$prix','0')";
-                $stmt = $this->db->prepare($query);
+                values (:dateCrea, :email, :nom, :prix,'0')";
+                $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         
-                $stmt->execute();
+                $stmt->execute([
+                    'dateCrea' => $dateCrea,
+                    'email' => $email,
+                    'nom' => $nom,
+                    'prix' => $prix
+                ]);
                 $this->createListeProduit();
             }catch(PDOException $e){
                 echo $e->getMessage();
@@ -85,10 +94,12 @@ class GestionPanier
             try{
                 $this->deleteListeProduit();
                 $email = $_SESSION['email'];
-                $query = "DELETE FROM facturation WHERE emailClient = '$email' and valider = '0'";
-                $stmt = $this->db->prepare($query);
+                $query = "DELETE FROM facturation WHERE emailClient = :email and valider = '0'";
+                $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-                $stmt->execute();
+                $stmt->execute([
+                    'email' => $email
+                ]);
             }catch(PDOException $e){
                 echo $e->getMessage();
             }
@@ -129,10 +140,12 @@ class GestionPanier
     private function selectPrixProduit($idProduit)
     {
         try{
-            $query = "SELECT produit.prixPublic FROM produit WHERE idProduit = '$idProduit'";
-            $stmt = $this->db->prepare($query);
+            $query = "SELECT produit.prixPublic FROM produit WHERE idProduit = :idProduit";
+            $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'idProduit' => $idProduit
+            ]);
             $result = $stmt->fetchAll();
             return $result[0]['prixPublic'];
 
@@ -149,12 +162,18 @@ class GestionPanier
             $idPanier=$panier[0]['IdPanier'];
             foreach ($produitUnique as $produit) :
                 $idProduit = $produit;
-                $qte = $count[$i]; $prix = $this->selectPrixProduit($idProduit); $date = date("Y");
+                $qte = $count[$i]; $prix = $this->selectPrixProduit($idProduit); $annee = date("Y");
                 $query = "insert into listeProduit (idProduit, qte, prixDuProduit, idPanier, annee) 
-                values ('$idProduit','$qte', '$prix','$idPanier', $date)";
-                $stmt = $this->db->prepare($query);
+                values (:idProduit, :qte, :prix, :idPanier, :annee)";
+                $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-                $stmt->execute();
+                $stmt->execute([
+                    'idProduit' => $idProduit,
+                    'qte' => $qte,
+                    'prix' => $prix,
+                    'idPanier' => $idPanier,
+                    'annee' => $annee
+                ]);
                 $i++;
             endforeach;
         }catch(PDOException $e){
@@ -168,10 +187,12 @@ class GestionPanier
             $panier = $this->selectFacture();
             if(!empty($panier)){
             $idPanier=$panier[0]['IdPanier'];
-            $query = "DELETE FROM listeProduit WHERE idPanier = '$idPanier'";
-            $stmt = $this->db->prepare($query);
+            $query = "DELETE FROM listeProduit WHERE idPanier = :idPanier";
+            $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();}
+            $stmt->execute([
+                'idPanier' => $idPanier
+            ]);}
         }catch(PDOException $e){
             echo $e->getMessage();
         }
@@ -186,10 +207,12 @@ class GestionPanier
     {
         try{
             $email = $_SESSION['email'];
-            $query = "SELECT * FROM facturation WHERE emailClient = '$email' and valider = '0'";
-            $stmt = $this->db->prepare($query);
+            $query = "SELECT * FROM facturation WHERE emailClient = :email and valider = '0'";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'email' => $email
+            ]);
             $result = $stmt->fetchAll();
             if(!empty($result)){$_SESSION['prix']= $result[0]['prix'];}
             return $result;
@@ -204,10 +227,12 @@ class GestionPanier
         try{
             $panier = $this->selectFacture();
             $idPanier=$panier[0]['IdPanier'];
-            $query = "SELECT * FROM listeProduit WHERE idPanier = '$idPanier'";
-            $stmt = $this->db->prepare($query);
+            $query = "SELECT * FROM listeProduit WHERE idPanier = :idPanier";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'idPanier' => $idPanier
+            ]);
             $result = $stmt->fetchAll();
             return $result;
 
@@ -225,10 +250,12 @@ class GestionPanier
             for($j = 0; $j <count($produitUnique); $j++) { 
                 if(isset($produitUnique[$j])){
                 $id = $produitUnique[$j];
-                $query = "SELECT produit.titre, produit.cover FROM produit,listeProduit WHERE produit.idProduit = listeProduit.idProduit AND produit.idProduit = '$id'";
-                $stmt = $this->db->prepare($query);
+                $query = "SELECT produit.titre, produit.cover FROM produit,listeProduit WHERE produit.idProduit = listeProduit.idProduit AND produit.idProduit = :id";
+                $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-                $stmt->execute();
+                $stmt->execute([
+                    'id' => $id
+                ]);
                 array_push($result,$stmt->fetchAll());}
             }
 
@@ -242,10 +269,12 @@ class GestionPanier
     {
         try{
             $email = $_SESSION['email'];
-            $query = "UPDATE facturation SET valider ='1' WHERE emailClient = '$email' and valider = '0'";
-            $stmt = $this->db->prepare($query);
+            $query = "UPDATE facturation SET valider ='1' WHERE emailClient = :email and valider = '0'";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-            $stmt->execute();
+            $stmt->execute([
+                'email' => $email
+            ]);
         }catch(PDOException $e){
             echo $e->getMessage();
         }

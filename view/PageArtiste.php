@@ -6,7 +6,7 @@
     <form action="/controller/Router.php" method="post">
         <input type="hidden" name="genre" value=<?= $produit['genre']?>>
         <input type="hidden" name="action" value="pageGenre">
-        <button type="submit"><?= $produit['genre']?></button>
+        <button type="submit"><?=str_replace("_", " ", $produit['genre'])?></button>
     </form>
     <p><?= $produit['anneeSortie'] ?></p>
 	<p><?= $produit['prixPublic'] ?></p>

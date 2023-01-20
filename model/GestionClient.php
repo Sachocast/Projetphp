@@ -15,19 +15,25 @@ class GestionClient
     public function insert($email,$nomUtil,$mdp)
     {
         $query = "insert into client (email, nomUtilisateur, mdp, admin) 
-        values ('$email', '$nomUtil', '$mdp','0')";
-        $stmt = $this->db->prepare($query);
+        values (:email, :nomUtil, :mdp,'0')";
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
-        $stmt->execute();
+        $stmt->execute([
+            'email' => $email,
+            'nomUtil' => $nomUtil,
+            'mdp' => $mdp
+        ]);
 
         $this->connection($email,$mdp);
     }
 
     public function verifEmail($email,$mdp)
     {
-        $query = "SELECT * FROM client WHERE email = '$email'";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $query = "SELECT * FROM client WHERE email = :email";
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'email' => $email
+        ]);
         
         $results = $stmt->fetchAll();
         if (empty($results)) {
@@ -51,9 +57,12 @@ class GestionClient
 
     public function select($email,$mdp)
     {
-        $query = "SELECT * FROM client WHERE  email = '$email' AND mdp = '$mdp'";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $query = "SELECT * FROM client WHERE  email = :email AND mdp = :mdp";
+        $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'email' => $email,
+            'mdp' => $mdp
+        ]);
  
         return $stmt->fetchAll();
 

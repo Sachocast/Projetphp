@@ -5,7 +5,7 @@
     <p><?= $info['emailClient'] ?></p>
     <p><?= $info['nomClient'] ?></p>
     <?php $i=0; foreach ($listeProduit as $produit) : if(isset($infoProduit[$i][0]['titre'])){ ?>
-        <p><?= $infoProduit[$i][0]['titre'] ?></p>
+        <p><?= str_replace("_", " ", $infoProduit[$i][0]['titre']) ?></p>
         <p><?= $produit['qte'] ?></p>
         <p><?= $produit['prixDuProduit'] ?></p>
     <?php $i++; } endforeach ?>

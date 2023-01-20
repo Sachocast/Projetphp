@@ -1,26 +1,50 @@
 <?php $title = "Compta"; ?>
 
-<h1>Compta</h1>
+<h1 class="h2form">Compta</h1>
 <?php if(!empty($comptaAnnee)) { ?>
-<label><strong><?= $comptaAnnee[0]['annee'] ?></strong></label>
-<label><strong><?= $comptaAnnee[0]['chiffreAffaire'] ?></strong></label>
-<label><strong><?= $comptaAnnee[0]['debit'] ?></strong></label>
+<div id="compta">
+    <label><strong>Annee <?= $comptaAnnee[0]['annee'] ?></strong></label>
+    <label><strong>Credit <?= $comptaAnnee[0]['chiffreAffaire'] ?></strong></label>
+    <label><strong>Debit <?= $comptaAnnee[0]['debit'] ?></strong></label>
+</div>
 <?php } ?>
 
-<h1>Credit</h1>
-<?php if(!empty($credit)){ foreach($credit as $c): ?>
-    <p><?= $c['idProduit'] ?></p>
-    <p><?= $c['titre'] ?></p>
-    <p><?= $c['prixDuProduit'] ?></p>
-    <p><?= $c['qte'] ?></p>
-    <p><?= $c['annee'] ?></p>
+<h1 class="h2form">Credit</h1>
+<table>
+  <tr>
+    <th>IdProduit</th>
+    <th>Titre</th>
+    <th>Prix du produit</th>
+    <th>Quantité</th>
+    <th>Annee</th>
+  </tr>
+  <?php if(!empty($credit)){ foreach($credit as $c): ?>
+    <tr>
+        <td><?= $c['idProduit'] ?></td>
+        <td><?= $c['titre'] ?></td>
+        <td><?= $c['prixDuProduit'] ?></td>
+        <td><?= $c['qte'] ?></td>
+        <td><?= $c['annee'] ?></td>
+    </tr>
 <?php endforeach; }?>
+</table>
 
-<h1>Debit</h1>
-<?php if(!empty($debit)){ foreach($debit as $d): ?>
-    <p><?= $d['idProduit'] ?></p>
-    <p><?= $d['titre'] ?></p>
-    <p><?= $d['prixAchat'] ?></p>
-    <p><?= $d['qte'] ?></p>
-    <p><?= $d['annee'] ?></p>
+<h1 class="h2form">Debit</h1>
+<table>
+  <tr>
+    <th>IdProduit</th>
+    <th>Titre</th>
+    <th>Prix du produit</th>
+    <th>Quantité</th>
+    <th>Annee</th>
+  </tr>
+  <?php if(!empty($debit)){ foreach($debit as $d): ?>
+    <tr>
+        <td><?= $d['idProduit'] ?></td>
+        <td><?= $d['titre'] ?></td>
+        <td><?= $d['prixAchat'] ?></td>
+        <td><?= $d['qte'] ?></td>
+        <td><?= $d['annee'] ?></td>
+    </tr>
 <?php endforeach; }?>
+</table>

@@ -1,63 +1,44 @@
 <?php $title = "Stocks"; ?>
 
-
-<?php foreach ($produitsCritique as $produit) : ?>
-    <p><?= $produit['idProduit'] ?><p>
-    <p><?= $produit['idStock'] ?><p>
-    <p><?= $produit['titre'] ?><p>
-    <p><?= $produit['qteStock'] ?><p>
-    <p><?= $produit['prixAchat'] ?><p>
-    <p><?= $produit['emailF'] ?><p>
-    <p><?= $produit['nomF'] ?><p>
-    <br>
-<?php endforeach ?>
-
-<div id=ajoutQteStock>
-<h2>Passer Commande</h2>
-<label><strong> <?= $verifErreur[0] ?></strong></label>
-    <form action="/controller/Router.php" method="post">
-        <fieldset>
-            <label>Id du produit</label>
-            <input type="text" name="idProduit" required="required"/>
-        </fieldset>
-        <fieldset>
-            <label>Titre</label>
-            <input type="text" name="titreAlbum" required="required"/>
-        </fieldset>
-        <fieldset>
-            <label>Quantite</label>
-            <input type="text"  pattern='[0-9]*' name="qte" required="required"/>
-        </fieldset>
-        <fieldset>
-            <input type="hidden" name="action" value="passerCommande">
-            <button type="submit">Valider</button>
-        </fieldset>
-    </form>
+<div class="horizontal">
+    <?php foreach ($produitsCritique as $produit) : ?>
+    <div class="vertical">
+            <p>idProduit: <?= $produit['idProduit'] ?><p>
+            <p>idStock: <?= $produit['idStock'] ?><p>
+            <p>titre: <?= $produit['titre'] ?><p>
+            <p>quantité en stock: <?= $produit['qteStock'] ?><p>
+            <p>prix achat: <?= $produit['prixAchat'] ?><p>
+            <p>fournisseur: <?= $produit['nomF'] ?><p>
+            <p>email du fournisseur: <?= $produit['emailF'] ?><p>
+            <br>
+    </div>
+    <?php endforeach ?>
 </div>
 
-<div id=ajoutQteStock>
-<h2>Changer fournisseur</h2>
-<label><strong> <?= $verifErreur[1] ?></strong></label>
-    <form action="/controller/Router.php" method="post">
-        <fieldset>
-            <label>Id du produit</label>
-            <input type="text" name="idProduit" required="required"/>
-        </fieldset>
-        <fieldset>
-            <label>Titre</label>
-            <input type="text" name="titreAlbum" required="required"/>
-        </fieldset>
-        <fieldset>
-            <label>Fournisseur</label>
-            <input type="text" name="nomF" required="required"/>
-        </fieldset>
-        <fieldset>
-            <label>Email Fournisseur</label>
-            <input type="text" name="emailF" required="required"/>
-        </fieldset>
-        <fieldset>
-            <input type="hidden" name="action" value="updateFournisseur">
-            <button type="submit">Valider</button>
-        </fieldset>
+    <h2 class="h2form" >Passer Commande</h2>
+    <label class="h2form"><strong> <?= $verifErreur[0] ?></strong></label>
+    <form class="form" action="/controller/Router.php" method="post">
+        <label>Id du produit</label>
+        <input type="text" name="idProduit" required="required"/>
+        <label>Titre</label>
+        <input type="text"  pattern="[^\s]+" title="Veuillez utiliser des underscores à la place des espaces." name="titreAlbum" required="required"/>
+        <label>Quantite</label>
+        <input type="text"  pattern='[0-9]*' name="qte" required="required"/>
+        <input type="hidden" name="action" value="passerCommande">
+        <button type="submit">Valider</button>
     </form>
-</div>
+
+    <h2 class="h2form">Changer fournisseur</h2>
+    <label class="h2form"><strong> <?= $verifErreur[1] ?></strong></label>
+    <form class="form" action="/controller/Router.php" method="post">
+        <label>Id du produit</label>
+        <input type="text" name="idProduit" required="required"/>
+        <label>Titre</label>
+        <input type="text"  pattern="[^\s]+" title="Veuillez utiliser des underscores à la place des espaces." name="titreAlbum" required="required"/>
+        <label>Fournisseur</label>
+        <input type="text"  pattern="[^\s]+" title="Veuillez utiliser des underscores à la place des espaces." pattern="[^\s]+" title="Ne peut pas contenir d'espace" name="nomF" required="required"/>
+        <label>Email Fournisseur</label>
+        <input type="text" name="emailF" required="required"/>
+        <input type="hidden" name="action" value="updateFournisseur">
+        <button type="submit">Valider</button>
+    </form>

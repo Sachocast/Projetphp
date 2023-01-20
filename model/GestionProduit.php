@@ -15,15 +15,24 @@ class GestionProduit
         $this->gestionStock = $gs;
     }
 
-    public function insert($titre,$genre,$anneeSortie,$prixPublic,$PrixAchat,$cover,$descriptif,$artiste,$nomF,$emailF): bool
+    public function insert($titre,$genre,$anneeSortie,$prixPublic,$prixAchat,$cover,$descriptif,$artiste,$nomF,$emailF): bool
     {
         if($this->verifExistePas($titre,$genre,$anneeSortie,$cover,$artiste))
         {
             $query = "insert into produit (titre, genre, anneeSortie, prixPublic, prixAchat, cover, descriptif, artiste) 
-            values ('$titre', '$genre', '$anneeSortie', '$prixPublic','$PrixAchat','$cover','$descriptif','$artiste')";
-            $stmt = $this->db->prepare($query);
+            values (:titre, :genre, :anneeSortie, :prixPublic, :prixAchat, :cover, :descriptif, :artiste)";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-            $stmt->execute();
+            $stmt->execute([
+                'titre' => $titre,
+                'genre' => $genre,
+                'anneeSortie' => $anneeSortie,
+                'prixPublic' => $prixPublic,
+                'prixAchat' => $prixAchat,
+                'cover' => $cover,
+                'descriptif' => $descriptif,
+                'artiste' => $artiste
+            ]);
             $this->gestionFournisseur->insert($nomF,$emailF);
             return true;
         }
@@ -44,27 +53,43 @@ class GestionProduit
     public function recherche($titre,$genre,$anneeSortie,$cover,$artiste)
     {
         if($cover!=""){
-            $query = "SELECT * FROM produit WHERE titre = '$titre' AND genre = '$genre' AND anneeSortie = '$anneeSortie'
-            AND cover = '$cover' AND artiste = '$artiste'";
+            $query = "SELECT * FROM produit WHERE titre = :titre AND genre = :genre AND anneeSortie = :anneeSortie
+            AND cover = :cover AND artiste = :artiste";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $stmt->execute([
+                'titre' => $titre,
+                'genre' => $genre,
+                'anneeSortie' => $anneeSortie,
+                'cover' => $cover,
+                'artiste' => $artiste
+            ]);
         }
         else{
-            $query = "SELECT * FROM produit WHERE titre = '$titre' AND genre = '$genre' AND anneeSortie = '$anneeSortie'
-            AND artiste = '$artiste'";
+            $query = "SELECT * FROM produit WHERE titre = :titre AND genre = :genre AND anneeSortie = :anneeSortie
+            AND artiste = :artiste";
+            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $stmt->execute([
+                'titre' => $titre,
+                'genre' => $genre,
+                'anneSortie' => $anneeSortie,
+                'artiste' => $artiste
+            ]);
         }
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        
-        $results = $stmt->fetchAll();
 
+        $results = $stmt->fetchAll();
+            
         return $results;
     }
 
     public function rechercheAvecId($idProduit,$titre)
     {
-        $query = "SELECT * FROM produit WHERE idProduit = '$idProduit' AND titre = '$titre'";
+        $query = "SELECT * FROM produit WHERE idProduit = :idProduit AND titre = :titre";
         
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'idProduit' => $idProduit,
+            'titre' => $titre
+        ]);
         
         $results = $stmt->fetchAll();
 
@@ -76,10 +101,12 @@ class GestionProduit
         if(!$this->verifExistePas($titre,$genre,$anneeSortie,"",$artiste))
         {
             if($this->gestionStock->supprimer($idProduit)){
-                $query = "DELETE FROM produit WHERE idProduit = '$idProduit'";
-                $stmt = $this->db->prepare($query);
+                $query = "DELETE FROM produit WHERE idProduit = :idProduit";
+                $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     
-                $stmt->execute();
+                $stmt->execute([
+                    'idProduit' => $idProduit
+                ]);
                 return true;
             }
         }
@@ -100,10 +127,12 @@ class GestionProduit
 
     public function chercheToutLesProduitsArtiste($artiste)
     {
-        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit AND artiste = '$artiste'";
+        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit AND artiste = :artiste";
 
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $stmt = $this->db->prepare($query,  [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'artiste' => $artiste
+        ]);
         
         $results = $stmt->fetchAll();
 
@@ -112,10 +141,12 @@ class GestionProduit
 
     public function chercheToutLesProduitsGenre($genre)
     {
-        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit AND genre = '$genre'";
+        $query = "SELECT produit.*, gestion_stock.qteStock FROM produit, gestion_stock WHERE produit.idProduit = gestion_stock.idProduit AND genre = :genre";
 
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $stmt->execute([
+            'genre' => $genre
+        ]);
         
         $results = $stmt->fetchAll();
 
