@@ -20,6 +20,11 @@
             </form>
         </div>
 
+        <form action="/controller/Router.php" method="post">
+            <input type="hidden" name="action" value="accueil">
+            <button id="produit" type="submit">Produit</button>
+        </form>
+
         <?php
             if (isset($_SESSION['avertissementStock']) && $_SESSION['avertissementStock']== true) { ?>
                 <div class="qteStock">
@@ -64,7 +69,7 @@
         <div class="linkPanier">
         <form action="/controller/Router.php" method="post">
                 <input type="hidden" name="action" value="panier">
-                <input id="imgPanier" type="image" src="/assets/img/site/panier.jpg" width=10% onclick="submit()" alt="panier">
+                <input id="imgPanier" type="image" src="/assets/img/site/panier.png" width=10% onclick="submit()" alt="panier">
             </form> 
         </div>
     </header>

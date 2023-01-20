@@ -53,31 +53,18 @@ class GestionProduit
     public function recherche($titre,$genre,$anneeSortie,$cover,$artiste)
     {
         if($cover!=""){
-            $query = "SELECT * FROM produit WHERE titre = :titre AND genre = :genre AND anneeSortie = :anneeSortie
-            AND cover = :cover AND artiste = :artiste";
-            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-            $stmt->execute([
-                'titre' => $titre,
-                'genre' => $genre,
-                'anneeSortie' => $anneeSortie,
-                'cover' => $cover,
-                'artiste' => $artiste
-            ]);
+            $query = "SELECT * FROM produit WHERE titre = '$titre' AND genre = '$genre' AND anneeSortie = '$anneeSortie'
+            AND cover = '$cover' AND artiste = '$artiste'";
         }
         else{
-            $query = "SELECT * FROM produit WHERE titre = :titre AND genre = :genre AND anneeSortie = :anneeSortie
-            AND artiste = :artiste";
-            $stmt = $this->db->prepare($query, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-            $stmt->execute([
-                'titre' => $titre,
-                'genre' => $genre,
-                'anneSortie' => $anneeSortie,
-                'artiste' => $artiste
-            ]);
+            $query = "SELECT * FROM produit WHERE titre = '$titre' AND genre = '$genre' AND anneeSortie = '$anneeSortie'
+            AND artiste = '$artiste'";
         }
-
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        
         $results = $stmt->fetchAll();
-            
+
         return $results;
     }
 
