@@ -150,7 +150,7 @@ class GestionPanier
             foreach ($produitUnique as $produit) :
                 $idProduit = $produit;
                 $qte = $count[$i]; $prix = $this->selectPrixProduit($idProduit); $date = date("Y");
-                $query = "insert into listeProduit (idProduit, qte, prixDuProduit, idPanier, date) 
+                $query = "insert into listeProduit (idProduit, qte, prixDuProduit, idPanier, annee) 
                 values ('$idProduit','$qte', '$prix','$idPanier', $date)";
                 $stmt = $this->db->prepare($query);
 

@@ -18,19 +18,11 @@ class LoginController
         {
             case 0:
                 $array[0] = "";
-                $array[1] = "";
                 $array[2] = "";
                 $array[3] = "";
                 return $array;
             case 1:
                 $array[0] = "Email deja utilisé";
-                $array[1] = "";
-                $array[2] = "";
-                $array[3] = "";
-                return $array;
-            case 2:
-                $array[0] = "";
-                $array[1] = "Numero deja utilisé";
                 $array[2] = "";
                 $array[3] = "";
                 return $array;
@@ -43,13 +35,11 @@ class LoginController
         {
             case 3:
                 $array[0] = "";
-                $array[1] = "";
                 $array[2] = "Email incorrecte";
                 $array[3] = "";
                 return $array;
             case 4:
                 $array[0] = "";
-                $array[1] = "";
                 $array[2] = "";
                 $array[3] = "Mot de passe incorrecte";
                 return $array;

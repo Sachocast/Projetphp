@@ -78,7 +78,7 @@ class GestionCompta
     {
         try{
             $date = date("Y");
-            $query = "insert into listeAchat (idProduit, qte, prixAchat, date) 
+            $query = "insert into listeAchat (idProduit, qte, prixAchat, annee) 
             values ('$idProduit','$qte', '$prixAchat', $date)";
             $stmt = $this->db->prepare($query);
 
@@ -88,6 +88,53 @@ class GestionCompta
         }
     }
 
+    public function selectAnnee()
+    {
+        try{
+            $date = date("Y");
+            $query = "SELECT * FROM compta WHERE annee = '$date'";
+            $stmt = $this->db->prepare($query);
+
+            $stmt->execute();
+            $results = $stmt->fetchAll();
+
+            return $results;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectCredit()
+    {
+        try{
+            $date = date("Y");
+            $query = "SELECT listeProduit.*, produit.titre FROM listeProduit,produit WHERE annee = $date AND produit.idProduit=listeProduit.idProduit";
+            $stmt = $this->db->prepare($query);
+
+            $stmt->execute();
+            $results = $stmt->fetchAll();
+
+            return $results;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectDebit()
+    {
+        try{
+            $date = date("Y");
+            $query = "SELECT listeAchat.*, produit.titre FROM listeAchat,produit WHERE annee = $date AND produit.idProduit=listeAchat.idProduit";
+            $stmt = $this->db->prepare($query);
+
+            $stmt->execute();
+            $results = $stmt->fetchAll();
+
+            return $results;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

@@ -119,3 +119,9 @@
         <button type="submit">Gerer les stocks</button>
     </form>
 </div>
+<div id="redirigeCompta">
+    <form action="/controller/Router.php" method="post">
+        <input type="hidden" name="action" value="compta">
+        <button type="submit">Comptabilité</button>
+    </form>
+</div>

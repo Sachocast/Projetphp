@@ -7,16 +7,9 @@
             <input type="text" required="required" name="nomUtil">
             <label><?= $login[0] ?></label>
             <label>Email</label>
-            <input type="email" name="email" required="required"/>
+            <input type="email" name="email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}" required="required"/>
             <label>Mot de passe</label>
             <input type="password" name="mdp" required="required"/>
-            <label><?= $login[1] ?></label>
-            <label>Numero telephone</label>
-            <input type="text" pattern='[0-9]*'  name="numTel" required="required">
-            <label>Pays</label>
-            <input type="text" name="pays" required="required">
-            <label>Ville</label>
-            <input type="text" name="ville" required="required">
             <input type="hidden" name="action" value="ajoutClient">
             <button type="submit">Valider</button>
     </form>
@@ -27,7 +20,7 @@
     <form action="/controller/Router.php" method="post">
             <label>Email</label>
             <label><?= $login[2] ?></label>
-            <input type="email" name="email" required="required"/>
+            <input type="email" name="email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}" required="required"/>
             <label>Mot de passe</label>
             <label><?= $login[3] ?></label>
             <input type="password" name="mdp" required="required"/>

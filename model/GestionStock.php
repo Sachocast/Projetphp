@@ -17,7 +17,7 @@ class GestionStock
         if($this->verifExistePas($idProduit))
         {
             $qteStock = intval($qteStock);
-            $idFournisseur = $this->chercheIdFournisseur($nomF,$emailF);
+            $idFournisseur = $this->chercheIdFournisseur($emailF);
             $query = "insert into gestion_stock (idProduit,idFournisseur,qteStock) 
             values ('$idProduit', '$idFournisseur','$qteStock')";
             $stmt = $this->db->prepare($query);
@@ -47,9 +47,9 @@ class GestionStock
         return $results;
     }
 
-    private function chercheIdFournisseur($nomF,$emailF)
+    private function chercheIdFournisseur($emailF)
     {
-        $fournisseur = $this->gestionFournisseur->recherche($nomF,$emailF);
+        $fournisseur = $this->gestionFournisseur->recherche($emailF);
         foreach($fournisseur as $row) {return $row['idFournisseur'];}
     }
 

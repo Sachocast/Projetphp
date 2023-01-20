@@ -11,7 +11,7 @@ class GestionFournisseur
 
     public function insert($nomF,$emailF)
     {
-        if($this->verifExistePas($nomF,$emailF))
+        if($this->verifExistePas($emailF))
         {
             $query = "insert into fournisseur (nomF, emailF) 
             values ('$nomF', '$emailF')";

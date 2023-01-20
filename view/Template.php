@@ -37,13 +37,15 @@
             
         </div>
         <?php
-            if (isset($_SESSION['email']) && $_SESSION['admin']== true) { ?>
+            if (isset($_SESSION['email']) && isset($_SESSION['admin'])) {
+                if($_SESSION['admin']==true) { ?>
+
                 <div class="admin">
                     <form action="/controller/Router.php" method="post">
                         <input type="hidden" name="action" value="admin">
                         <input id="imgAdmin" type="image" src="/assets/img/site/admin.png" width=10% onclick="submit()" alt="admin">
                     </form>
-                </div> <?php
+                </div> <?php }
             }
         ?>
         <?php

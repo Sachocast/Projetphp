@@ -17,6 +17,8 @@ require_once __DIR__ . '/StocksController.php';
 require_once __DIR__ . '/VVController.php';
 require_once __DIR__ . '/PAController.php';
 require_once __DIR__ . '/PGController.php';
+require_once __DIR__ . '/ComptaController.php';
+require_once __DIR__ . '/FPController.php';
 require_once __DIR__ . '/../view/Vue.php';
 
 class Routeur
@@ -31,6 +33,8 @@ class Routeur
     private $vvController;
     private $paController;
     private $pgController;
+    private $comptaController;
+    private $fpController;
     private $gestionClient;
     private $gestionProduit;
     private $gestionStock;
@@ -51,6 +55,8 @@ class Routeur
         $this->vvController = new VVController();
         $this->paController = new paController();
         $this->pgController = new pgController();
+        $this->comptaController = new ComptaController();
+        $this->fpController = new FPController();
         $this->gestionStock = new GestionStock($this->db);
         $this->gestionClient = new GestionClient($this->db);
         $this->gestionProduit = new GestionProduit($this->db,$this->gestionStock);
@@ -101,22 +107,23 @@ class Routeur
         {
             $this->stocksController->displayStocks($this->gestionProduit->selectInfoProduitStockCritique(),0);
             return;
-        }       
+        }  
+        if($_POST['action'] == 'compta')
+        {
+            $this->comptaController->displayCompta($this->gestionCompta->selectAnnee(),$this->gestionCompta->selectCredit(),$this->gestionCompta->selectDebit());
+            return;
+        }            
         if($_POST['action'] == 'ajoutClient')
         {
             try {
                 // Requête SQL ici
-                $this->gestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp'],$_POST['numTel'],$_POST['pays'],$_POST['ville']);
+                $this->gestionClient->insert($_POST['email'],$_POST['nomUtil'],$_POST['mdp']);
                 $this->accueilController->displayAccueil($this->listProduit);
                 return;
               } catch (PDOException $e) {
                 if ($e->getMessage()=="SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '".$_POST['email']."' for key 'PRIMARY'") {
                     // Erreur de duplication de clé primaire
                     $this->loginController->displayLogin(1);
-                }
-                else if ($e->getMessage()=="SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '".$_POST['numTel']."' for key 'numTel'") {
-                    // Erreur de duplication du numéro
-                    $this->loginController->displayLogin(2);
                 }
                 else{
                  echo $e->getMessage();
@@ -161,13 +168,15 @@ class Routeur
                     $idProduit ="";
                     foreach($produit as $row){$idProduit= $row['idProduit'];}
                     $this->gestionStock->insert($idProduit,$_POST['qteStock'],$_POST['nomF'],$_POST['emailF']);
+                    $this->gestionCompta->insertListeAchat($produit[0]['idProduit'],$_POST['qteStock'],$produit[0]['prixAchat']);
+                    $this->gestionCompta->metAjourDebit($produit[0]['prixAchat'],$_POST['qteStock']);
                     $this->adminController->displayAdmin(0);
 
                 }
                 else $this->adminController->displayAdmin(1);
                 return;
             }catch(PDOException $e) {
-                echo $e->getMessage();
+               echo $e->getMessage();
             }
         }
         if($_POST['action'] == 'rechercheProduit')
@@ -253,9 +262,11 @@ class Routeur
         {
             $this->gestionPanier->finPaiement();
             $this->gestionCompta->metAjourCA();
-            $this->gestionStock->metAjourStock();     
-            $_POST['action'] = 'viderPanier';
-            $this->handleRequest();
+            $this->gestionStock->metAjourStock(); 
+            $this->fpController->displayFP(); 
+            $this->envoiEmailClient();
+            $this->envoiEmailGerant();   
+            $this->gestionPanier->viderPanier();
             return;
         }      
 
@@ -277,11 +288,25 @@ class Routeur
             $_SESSION['email']=$_COOKIE['email'];
             $_SESSION['nomUtil']=$_COOKIE['nomUtil'];
             $_SESSION['mdp']=$_COOKIE['mdp'];
-            $_SESSION['pays']=$_COOKIE['pays'];
-            $_SESSION['ville']=$_COOKIE['ville'];
-            $_SESSION['admin']=$_COOKIE['admin'];
-            $_SESSION['numTel']=$_COOKIE['numTel'];
         }
+    }
+
+    private function envoiEmailClient()
+    {
+        $destinataire = $_SESSION['email'];
+        $subject = "Achat Disc-Over";
+        $message = "Votre achat a bien été validé.";
+        $headers = "De: 08.mobjsp@gmail.com" . "\r\n";
+        mail($destinataire,$subject,$message,$headers);
+    }
+
+    private function envoiEmailGerant()
+    {
+        $destinataire = "08.mobjsp@gmail.com";
+        $subject = "Achat Disc-Over";
+        $message = "Une commande vient d'être passé.";
+        $headers = "De: 08.mobjsp@gmail.com" . "\r\n";
+        mail($destinataire,$subject,$message,$headers);
     }
 
 }
