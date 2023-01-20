@@ -84,3 +84,50 @@ header nav ul li a {
 #produit:hover {
     background-color: #ff8800; 
 }
+
+.Accueil {
+    display: flex;
+    padding: 2%;
+    justify-content: space-evenly;
+}
+
+.Accueil h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.Accueil img {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.Accueil form button {
+    display: block;
+    color: black; 
+    margin-top: 20px; 
+    border: none; 
+    cursor: pointer; 
+}
+
+.panier {
+    display: block;
+    width: 15%; 
+    background-color: #ff951b; 
+    color: black; 
+    padding: 14px 20px; 
+    border: none; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    margin: auto;
+}
+
+.panier:hover {
+    background-color: #ff8800; 
+}
+
+
+.Accueil p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
