@@ -1,8 +1,8 @@
 <?php $title = "Login"; ?>
 
-    <h2 class="h2form">Créé compte<h2>
+    <h2 class="h2form">Créer compte<h2>
     <form class="form"action="/controller/Router.php" method="post">
-            <label>Nom utilisateur</label>
+            <label>Nom d'utilisateur</label>
             <input type="text" pattern="[^\s]+" title="Ne peut pas contenir d'espace" required="required" name="nomUtil">
             <label><?= $login[0] ?></label>
             <label>Email</label>

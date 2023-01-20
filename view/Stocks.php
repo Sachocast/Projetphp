@@ -15,7 +15,7 @@
     <?php endforeach ?>
 </div>
 
-    <h2 class="h2form" >Passer Commande</h2>
+    <h2 class="h2form" >Passer une commande</h2>
     <label class="h2form"><strong> <?= $verifErreur[0] ?></strong></label>
     <form class="form" action="/controller/Router.php" method="post">
         <label>Id du produit</label>
@@ -28,7 +28,7 @@
         <button type="submit">Valider</button>
     </form>
 
-    <h2 class="h2form">Changer fournisseur</h2>
+    <h2 class="h2form">Changer de fournisseur</h2>
     <label class="h2form"><strong> <?= $verifErreur[1] ?></strong></label>
     <form class="form" action="/controller/Router.php" method="post">
         <label>Id du produit</label>

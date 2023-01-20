@@ -14,7 +14,7 @@
         <button type="submit"><?= str_replace("_", " ", $produit['artiste'])?></button>
     </form>
     <p>Annee de sortie: <?= $produit['anneeSortie'] ?></p>
-	<p>prix: <?= $produit['prixPublic']?> € </p>
+	<p>Prix: <?= $produit['prixPublic']?> € </p>
     <p><?= $produit['descriptif'] ?></p>
     <?php if(isset($_SESSION['email']) && $produit['qteStock']>0 ){ ?>
     <form action="/controller/Router.php" method="post">

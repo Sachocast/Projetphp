@@ -18,7 +18,7 @@
     <h2 class="h2form">Ajouter un Produit</h2>
     <label  class="h2form"><strong><?= $admin[0] ?></strong></label>
     <label  class="h2form"><strong>Pour le titre, l'artiste, et le genre</strong></label>
-    <label  class="h2form"><strong>veuillez mettre des underscores a la place des espaces</strong></label>
+    <label  class="h2form"><strong>veuillez mettre des underscores à la place des espaces</strong></label>
     <form class="form" action="/controller/Router.php" method="post">
         <label>Titre</label>
         <input type="text" pattern="[^\s]+" title="Veuillez utiliser des underscores à la place des espaces." name="titreAlbum" required="required"/>

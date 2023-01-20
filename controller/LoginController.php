@@ -35,13 +35,13 @@ class LoginController
         {
             case 3:
                 $array[0] = "";
-                $array[2] = "Email incorrecte";
+                $array[2] = "Email incorrect";
                 $array[3] = "";
                 return $array;
             case 4:
                 $array[0] = "";
                 $array[2] = "";
-                $array[3] = "Mot de passe incorrecte";
+                $array[3] = "Mot de passe incorrect";
                 return $array;
         }
     }

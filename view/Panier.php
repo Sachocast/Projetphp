@@ -30,8 +30,8 @@ if(isset($_SESSION['panier'])){
             <h2><?= str_replace("_", " ", $produit[0]['titre']) ?></h2>
             <img src="/assets/img/album/<?= $produit[0]['cover'] ?>" width=5% height=10% alt=<?= $produit[0]['cover'] ?>>
             <p><?= str_replace("_", " ", $produit[0]['artiste']) ?></p>
-            <p>prix du produit: <?= str_replace("_", " ", $produit[0]['prixPublic']) ?> €</p>
-            <p>quantite: <?= $count[$j]; ?></p>
+            <p>Prix du produit : <?= str_replace("_", " ", $produit[0]['prixPublic']) ?> €</p>
+            <p>Quantité : <?= $count[$j]; ?></p>
     <?php $j++; endforeach ?>
         <br>    
         <input type="hidden" name="action" value="validerPanier">

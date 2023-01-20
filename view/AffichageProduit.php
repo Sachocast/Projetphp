@@ -12,7 +12,7 @@
 <br>
 <label>Annee de sortie: <?= $ap[0]['anneeSortie'] ?></label>
 <br>
-<label>Prix publique: <?= $ap[0]['prixPublic'] ?></label>
+<label>Prix public: <?= $ap[0]['prixPublic'] ?></label>
 <br>
 <label>Prix achat: <?= $ap[0]['prixAchat'] ?></label>
 <br>
