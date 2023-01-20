@@ -1,0 +1,76 @@
+.affichagePanier {
+    display: flex;
+    padding: 2%;
+}
+
+.affichagePanier h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.affichagePanier img {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+.affichagePanier p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#payerPanier button {
+    display: block;
+    width: 8%;
+    background-color: #ff951b;
+    color: black;
+    padding: 1%;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 5%;
+}
+    
+#payerPanier button:hover {
+    background-color: #ff8800; 
+}
+
+#viderPanier {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#viderPanier button {
+    display: block;
+    width: 100%;
+    background-color: #ff951b;
+    color: black;
+    padding: 1%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 30%;
+}
+    
+#viderPanier button:hover {
+    background-color: #ff8800; 
+}
+    
+#validerPaiement button {
+    display: block;
+    width: 6%;
+    background-color: #ff951b;
+    color: black;
+    padding: 1%;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 2%;
+    margin-left: 2.5%;
+}
+    
+#validerPaiement button:hover {
+    background-color: #ff8800; 
+}

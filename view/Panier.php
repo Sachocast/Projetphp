@@ -27,20 +27,27 @@ if(isset($_SESSION['panier'])){
     <form action="/controller/Router.php" method="post">
     <?php     $j=0;
         foreach ($unique_items as $produit) : ?>
-            <h2><?= str_replace("_", " ", $produit[0]['titre']) ?></h2>
-            <img src="/assets/img/album/<?= $produit[0]['cover'] ?>" width=5% height=10% alt=<?= $produit[0]['cover'] ?>>
-            <p><?= str_replace("_", " ", $produit[0]['artiste']) ?></p>
-            <p>Prix du produit : <?= str_replace("_", " ", $produit[0]['prixPublic']) ?> €</p>
-            <p>Quantité : <?= $count[$j]; ?></p>
+            <div class="affichagePanier">
+                <img src="/assets/img/album/<?= $produit[0]['cover'] ?>" width=5% height=10% alt=<?= $produit[0]['cover'] ?>>
+                <div class="test">
+                    <h2><?= str_replace("_", " ", $produit[0]['titre']) ?></h2>
+                    <p><?= str_replace("_", " ", $produit[0]['artiste']) ?></p>
+                    <p>Prix du produit : <?= str_replace("_", " ", $produit[0]['prixPublic']) ?> €</p>
+                    <p>Quantité : <?= $count[$j]; ?></p>
+                </div>
+            </div>
     <?php $j++; endforeach ?>
         <br>    
-        <input type="hidden" name="action" value="validerPanier">
-        <button type="submit">Payer</button>
+        <div id="payerPanier">
+            <input type="hidden" name="action" value="validerPanier">
+            <button type="submit">Payer</button>
+        </div>
     </form>
 <?php } ?>
-
+<div id="viderPanier">
     <form action="/controller/Router.php" method="post">
         <input type="hidden" name="action" value="viderPanier">
         <button type="submit">Vider le panier</button>
     </form>
+</div>
 

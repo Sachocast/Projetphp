@@ -12,7 +12,9 @@
     <p>Prix total HT : <?= $info['prix'] ?> €</p>
     <p>Prix total TTC : <?= $info['prix']*1.20 ?> €</p>
 <?php endforeach ?>
-<form action="/controller/Router.php" method="post">
-    <input type="hidden" name="action" value="paiement">
-    <button type="submit">Valider</button>
-</form>
+<div id="validerPaiement">
+    <form action="/controller/Router.php" method="post">
+        <input type="hidden" name="action" value="paiement">
+        <button type="submit">Valider</button>
+    </form>
+</div>

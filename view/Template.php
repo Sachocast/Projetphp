@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/assets/css/Style.css">
     <link rel="stylesheet" href="/assets/css/Form.css">
     <link rel="stylesheet" href="/assets/css/Alignement.css">
+    <link rel="stylesheet" href="/assets/css/AffichagePanier.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
 
