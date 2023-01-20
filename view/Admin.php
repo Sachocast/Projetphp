@@ -39,7 +39,7 @@
         <label>Fournisseur</label>
         <input type="text" pattern="[^\s]+" title="Ne peut pas contenir d'espace" name="nomF" required="required"/>
         <label>Email fournisseur</label>
-        <input type="text" name="emailF" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}" required="required"/>
+        <input type="text" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}"  name="emailF" required="required"/>
         <label>Stock</label>
         <input type="text" pattern='[0-9]*'  name="qteStock" required="required"/>
         <input type="hidden" name="action" value="ajoutProduit">

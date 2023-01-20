@@ -167,7 +167,7 @@ class Routeur
                     $produit = $this->gestionProduit->recherche($_POST['titreAlbum'],$_POST['genre'],$_POST['anneeSortie'],$_POST['cover'],$_POST['artiste']);
                     $idProduit ="";
                     foreach($produit as $row){$idProduit= $row['idProduit'];}
-                    $this->gestionStock->insert($idProduit,$_POST['qteStock'],$_POST['nomF'],$_POST['emailF']);
+                    $this->gestionStock->insert($idProduit,$_POST['qteStock'],$_POST['emailF']);
                     $this->gestionCompta->insertListeAchat($produit[0]['idProduit'],$_POST['qteStock'],$produit[0]['prixAchat']);
                     $this->gestionCompta->metAjourDebit($produit[0]['prixAchat'],$_POST['qteStock']);
                     $this->adminController->displayAdmin(0);
